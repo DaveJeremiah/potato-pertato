@@ -87,127 +87,192 @@ export default function ExamRevisionStudio() {
   const isPqaComplete = currentComp && selectedChunks.length === currentComp.pqaChunks.length;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, gap: '0.5rem' }}>
-      {/* COMPACT SMARTBOARD CONTROL BAR */}
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, gap: '0.65rem' }}>
+      {/* =========================================================
+          UNIFIED SMARTBOARD CONTROLLER (TUCKED NAVIGATION)
+         ========================================================= */}
       <div
+        className="retro-window"
         style={{
+          backgroundColor: 'var(--surface)',
+          padding: '0.45rem 0.85rem',
+          borderRadius: '16px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '0.45rem',
-          backgroundColor: 'var(--surface)',
-          border: '2px solid var(--border-ink)',
-          borderRadius: '16px',
-          boxShadow: '3px 3px 0px var(--shadow-ink)',
-          padding: '0.4rem 0.8rem',
+          gap: '0.5rem',
           flexShrink: 0
         }}
       >
-        {/* Paper Toggle */}
-        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-          <button
-            onClick={() => handlePaperSwitch('nonfiction')}
+        {/* Left: Paper Toggle + Station Navigation */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {/* Paper Toggle */}
+          <div
             style={{
-              padding: '0.3rem 0.75rem',
+              display: 'inline-flex',
+              backgroundColor: 'var(--surface-alt)',
+              padding: '2px',
               borderRadius: '999px',
-              border: '2px solid var(--border-ink)',
-              fontWeight: 800,
-              fontSize: '0.84rem',
-              backgroundColor: activePaperId === 'nonfiction' ? 'var(--card-orange)' : 'var(--surface)',
-              color: 'var(--text-primary)',
-              boxShadow: activePaperId === 'nonfiction' ? '2px 2px 0px var(--shadow-ink)' : 'none',
-              cursor: 'pointer'
+              border: '1.5px solid var(--border-ink)'
             }}
           >
-            🌍 Paper 1: Animals
-          </button>
-          <button
-            onClick={() => handlePaperSwitch('fiction')}
+            {[
+              { id: 'nonfiction', label: '🌍 Paper 1' },
+              { id: 'fiction', label: '🐉 Paper 2' }
+            ].map((p) => {
+              const active = activePaperId === p.id;
+              return (
+                <button
+                  key={p.id}
+                  onClick={() => handlePaperSwitch(p.id)}
+                  style={{
+                    padding: '0.22rem 0.65rem',
+                    borderRadius: '999px',
+                    border: 'none',
+                    fontWeight: 800,
+                    fontSize: '0.78rem',
+                    cursor: 'pointer',
+                    backgroundColor: active ? (isDark ? '#423108' : '#FCE3A1') : 'transparent',
+                    color: active ? (isDark ? '#FBBF24' : '#1E1E24') : 'var(--text-secondary)'
+                  }}
+                >
+                  {p.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Station Selector Segmented */}
+          <div
             style={{
-              padding: '0.3rem 0.75rem',
+              display: 'inline-flex',
+              backgroundColor: 'var(--surface-alt)',
+              padding: '2px',
               borderRadius: '999px',
-              border: '2px solid var(--border-ink)',
-              fontWeight: 800,
-              fontSize: '0.84rem',
-              backgroundColor: activePaperId === 'fiction' ? 'var(--card-purple)' : 'var(--surface)',
-              color: 'var(--text-primary)',
-              boxShadow: activePaperId === 'fiction' ? '2px 2px 0px var(--shadow-ink)' : 'none',
-              cursor: 'pointer'
+              border: '1.5px solid var(--border-ink)'
             }}
           >
-            🐉 Paper 2: Dragon
-          </button>
+            {[
+              { id: 'comprehension', label: `📖 P.Q.A. (${paper.comprehension.length})` },
+              { id: 'vocabGrammar', label: `✨ Vocab (${paper.vocabAndGrammar.length})` },
+              { id: 'fullPassage', label: '📜 Reading' }
+            ].map((s) => {
+              const active = activeStation === s.id;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => setActiveStation(s.id)}
+                  style={{
+                    padding: '0.22rem 0.65rem',
+                    borderRadius: '999px',
+                    border: 'none',
+                    fontWeight: 800,
+                    fontSize: '0.78rem',
+                    cursor: 'pointer',
+                    backgroundColor: active ? 'var(--cobalt)' : 'transparent',
+                    color: active ? '#FFFFFF' : 'var(--text-secondary)'
+                  }}
+                >
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Station Navigation */}
-        <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
-          <button
-            onClick={() => setActiveStation('comprehension')}
-            style={{
-              padding: '0.3rem 0.75rem',
-              borderRadius: '10px',
-              border: '2px solid var(--border-ink)',
-              fontWeight: 800,
-              fontSize: '0.84rem',
-              backgroundColor: activeStation === 'comprehension' ? 'var(--ink)' : 'var(--surface)',
-              color: activeStation === 'comprehension' ? 'var(--bg-paper)' : 'var(--text-primary)',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.3rem'
-            }}
-          >
-            <BookOpen size={14} /> 1. P.Q.A. ({paper.comprehension.length})
-          </button>
+        {/* Right: Question Stepper + Quick Notebook Link */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+          {activeStation === 'comprehension' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <button
+                disabled={compIndex === 0}
+                onClick={() => setCompIndex((i) => Math.max(0, i - 1))}
+                className="retro-btn-outline"
+                style={{ padding: '0.2rem 0.45rem', borderRadius: '8px', opacity: compIndex === 0 ? 0.35 : 1 }}
+                title="Previous Question"
+              >
+                <ChevronLeft size={16} />
+              </button>
 
-          <button
-            onClick={() => setActiveStation('vocabGrammar')}
-            style={{
-              padding: '0.3rem 0.75rem',
-              borderRadius: '10px',
-              border: '2px solid var(--border-ink)',
-              fontWeight: 800,
-              fontSize: '0.84rem',
-              backgroundColor: activeStation === 'vocabGrammar' ? 'var(--ink)' : 'var(--surface)',
-              color: activeStation === 'vocabGrammar' ? 'var(--bg-paper)' : 'var(--text-primary)',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.3rem'
-            }}
-          >
-            <Sparkles size={14} /> 2. Vocab & Grammar ({paper.vocabAndGrammar.length})
-          </button>
+              <div style={{ display: 'flex', gap: '0.2rem' }}>
+                {paper.comprehension.map((q, idx) => (
+                  <button
+                    key={q.id}
+                    onClick={() => setCompIndex(idx)}
+                    style={{
+                      padding: '0.2rem 0.45rem',
+                      borderRadius: '6px',
+                      border: compIndex === idx ? '2px solid var(--border-ink)' : '1px solid var(--border-ink)',
+                      fontWeight: 900,
+                      fontSize: '0.76rem',
+                      backgroundColor: compIndex === idx ? 'var(--cobalt)' : 'var(--surface-alt)',
+                      color: compIndex === idx ? '#FFFFFF' : 'var(--text-secondary)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {q.number}
+                  </button>
+                ))}
+              </div>
 
-          <button
-            onClick={() => setActiveStation('fullPassage')}
-            style={{
-              padding: '0.3rem 0.75rem',
-              borderRadius: '10px',
-              border: '2px solid var(--border-ink)',
-              fontWeight: 800,
-              fontSize: '0.84rem',
-              backgroundColor: activeStation === 'fullPassage' ? 'var(--ink)' : 'var(--surface)',
-              color: activeStation === 'fullPassage' ? 'var(--bg-paper)' : 'var(--text-primary)',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.3rem'
-            }}
-          >
-            <Eye size={14} /> Full Reading
-          </button>
+              <button
+                disabled={compIndex === paper.comprehension.length - 1}
+                onClick={() => setCompIndex((i) => Math.min(paper.comprehension.length - 1, i + 1))}
+                className="retro-btn-outline"
+                style={{
+                  padding: '0.2rem 0.45rem',
+                  borderRadius: '8px',
+                  opacity: compIndex === paper.comprehension.length - 1 ? 0.35 : 1
+                }}
+                title="Next Question"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          )}
+
+          {activeStation === 'vocabGrammar' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <button
+                disabled={vgIndex === 0}
+                onClick={() => setVgIndex((i) => Math.max(0, i - 1))}
+                className="retro-btn-outline"
+                style={{ padding: '0.2rem 0.45rem', borderRadius: '8px', opacity: vgIndex === 0 ? 0.35 : 1 }}
+                title="Previous Vocab Question"
+              >
+                <ChevronLeft size={16} />
+              </button>
+
+              <span style={{ fontSize: '0.82rem', fontWeight: 900, color: 'var(--text-primary)' }}>
+                {currentVg.number}
+              </span>
+
+              <button
+                disabled={vgIndex === paper.vocabAndGrammar.length - 1}
+                onClick={() => setVgIndex((i) => Math.min(paper.vocabAndGrammar.length - 1, i + 1))}
+                className="retro-btn-outline"
+                style={{
+                  padding: '0.2rem 0.45rem',
+                  borderRadius: '8px',
+                  opacity: vgIndex === paper.vocabAndGrammar.length - 1 ? 0.35 : 1
+                }}
+                title="Next Vocab Question"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          )}
 
           <Link
             to={`/punctuation-clinic?paper=${activePaperId}`}
             style={{
-              padding: '0.3rem 0.75rem',
-              borderRadius: '10px',
-              border: '2px solid var(--border-ink)',
+              padding: '0.25rem 0.65rem',
+              borderRadius: '999px',
+              border: '1.5px solid var(--border-ink)',
               fontWeight: 800,
-              fontSize: '0.84rem',
-              backgroundColor: 'var(--card-yellow)',
+              fontSize: '0.78rem',
+              backgroundColor: isDark ? '#2B1E05' : '#FCE3A1',
               color: 'var(--text-primary)',
               textDecoration: 'none',
               display: 'inline-flex',
@@ -215,7 +280,7 @@ export default function ExamRevisionStudio() {
               gap: '0.3rem'
             }}
           >
-            <Wrench size={14} /> Punctuation Surgery →
+            <Wrench size={13} /> Surgery →
           </Link>
         </div>
       </div>
@@ -225,67 +290,6 @@ export default function ExamRevisionStudio() {
          ========================================================= */}
       {activeStation === 'comprehension' && currentComp && (
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, gap: '0.5rem' }}>
-          {/* Substrip: Question Pills + Stepper */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '0.5rem',
-              flexShrink: 0
-            }}
-          >
-            <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', flexWrap: 'wrap' }}>
-              {paper.comprehension.map((q, idx) => (
-                <button
-                  key={q.id}
-                  onClick={() => setCompIndex(idx)}
-                  style={{
-                    minWidth: '44px',
-                    padding: '0.25rem 0.6rem',
-                    borderRadius: '8px',
-                    border: '2px solid var(--border-ink)',
-                    fontWeight: 900,
-                    fontSize: '0.85rem',
-                    backgroundColor: compIndex === idx ? 'var(--cobalt)' : 'var(--surface)',
-                    color: compIndex === idx ? '#FFFFFF' : 'var(--text-primary)',
-                    boxShadow: compIndex === idx ? '2px 2px 0px var(--shadow-ink)' : 'none',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {q.number}
-                </button>
-              ))}
-              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-secondary)', marginLeft: '0.3rem' }}>
-                ({currentComp.marks})
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', gap: '0.35rem' }}>
-              <button
-                disabled={compIndex === 0}
-                onClick={() => setCompIndex((i) => Math.max(0, i - 1))}
-                className="retro-btn-outline"
-                style={{ padding: '0.25rem 0.6rem', fontSize: '0.82rem', opacity: compIndex === 0 ? 0.45 : 1 }}
-              >
-                <ChevronLeft size={15} /> Prev
-              </button>
-              <button
-                disabled={compIndex === paper.comprehension.length - 1}
-                onClick={() => setCompIndex((i) => Math.min(paper.comprehension.length - 1, i + 1))}
-                className="retro-btn-outline"
-                style={{
-                  padding: '0.25rem 0.6rem',
-                  fontSize: '0.82rem',
-                  opacity: compIndex === paper.comprehension.length - 1 ? 0.45 : 1
-                }}
-              >
-                Next <ChevronRight size={15} />
-              </button>
-            </div>
-          </div>
-
           {/* MAIN 2-COLUMN SINGLE-VIEWPORT SPLIT */}
           <div
             style={{
