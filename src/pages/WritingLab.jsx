@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { WRITING_ARCHITECT_DATA } from '../data/examRevisionData';
 import NotebookBridgeModal from '../components/NotebookBridgeModal';
+import { useTheme } from '../context/ThemeContext';
 import {
   Blocks,
   EyeOff,
@@ -15,7 +16,20 @@ import {
   ChevronLeft
 } from 'lucide-react';
 
+const DARK_PARA_COLORS = {
+  '#F1DFFE': '#261338',
+  '#92C5E3': '#0E2138',
+  '#FCE3A1': '#2B1E05',
+  '#F9BDD5': '#330F20',
+  '#C7E0CD': '#0E2616',
+  '#F5C0A1': '#351A0C'
+};
+
+const DARK_CLINIC_THEMES = ['#330F20', '#2B1E05', '#0E2138', '#261338'];
+const LIGHT_CLINIC_THEMES = ['#F9BDD5', '#FCE3A1', '#92C5E3', '#F1DFFE'];
+
 export default function WritingLab() {
+  const { isDark } = useTheme();
   const [activeMode, setActiveMode] = useState('fantasyQuest'); // 'fantasyQuest' | 'animalCard' | 'upgrader'
   const [activeParaIdx, setActiveParaIdx] = useState(0);
   const [selectedBlocks, setSelectedBlocks] = useState({});
@@ -33,6 +47,8 @@ export default function WritingLab() {
     activeMode === 'animalCard' ? WRITING_ARCHITECT_DATA.animalCard : WRITING_ARCHITECT_DATA.fantasyQuest;
 
   const currentPara = currentBlueprint.paragraphs[activeParaIdx] || currentBlueprint.paragraphs[0];
+
+  const getParaColor = (hex) => (isDark ? DARK_PARA_COLORS[hex] || '#1B1F2E' : hex);
 
   const handleSelectOption = (paraId, slotId, optionText) => {
     setSelectedBlocks((prev) => ({
@@ -81,10 +97,10 @@ export default function WritingLab() {
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: '0.45rem',
-          backgroundColor: '#FFFFFF',
-          border: '2px solid #1E1E24',
+          backgroundColor: 'var(--surface)',
+          border: '2px solid var(--border-ink)',
           borderRadius: '16px',
-          boxShadow: '3px 3px 0px #1E1E24',
+          boxShadow: '3px 3px 0px var(--shadow-ink)',
           padding: '0.4rem 0.8rem',
           flexShrink: 0
         }}
@@ -100,11 +116,22 @@ export default function WritingLab() {
             style={{
               padding: '0.25rem 0.65rem',
               borderRadius: '999px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.82rem',
-              backgroundColor: activeMode === 'fantasyQuest' ? '#F1DFFE' : '#FFFFFF',
-              boxShadow: activeMode === 'fantasyQuest' ? '2px 2px 0px #1E1E24' : 'none',
+              backgroundColor:
+                activeMode === 'fantasyQuest'
+                  ? isDark
+                    ? '#261338'
+                    : '#F1DFFE'
+                  : 'var(--surface)',
+              color:
+                activeMode === 'fantasyQuest'
+                  ? isDark
+                    ? '#C084FC'
+                    : '#1E1E24'
+                  : 'var(--text-primary)',
+              boxShadow: activeMode === 'fantasyQuest' ? '2px 2px 0px var(--shadow-ink)' : 'none',
               cursor: 'pointer'
             }}
           >
@@ -119,11 +146,22 @@ export default function WritingLab() {
             style={{
               padding: '0.25rem 0.65rem',
               borderRadius: '999px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.82rem',
-              backgroundColor: activeMode === 'animalCard' ? '#F5C0A1' : '#FFFFFF',
-              boxShadow: activeMode === 'animalCard' ? '2px 2px 0px #1E1E24' : 'none',
+              backgroundColor:
+                activeMode === 'animalCard'
+                  ? isDark
+                    ? '#351A0C'
+                    : '#F5C0A1'
+                  : 'var(--surface)',
+              color:
+                activeMode === 'animalCard'
+                  ? isDark
+                    ? '#FB923C'
+                    : '#1E1E24'
+                  : 'var(--text-primary)',
+              boxShadow: activeMode === 'animalCard' ? '2px 2px 0px var(--shadow-ink)' : 'none',
               cursor: 'pointer'
             }}
           >
@@ -134,11 +172,22 @@ export default function WritingLab() {
             style={{
               padding: '0.25rem 0.65rem',
               borderRadius: '999px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.82rem',
-              backgroundColor: activeMode === 'upgrader' ? '#FCE3A1' : '#FFFFFF',
-              boxShadow: activeMode === 'upgrader' ? '2px 2px 0px #1E1E24' : 'none',
+              backgroundColor:
+                activeMode === 'upgrader'
+                  ? isDark
+                    ? '#2B1E05'
+                    : '#FCE3A1'
+                  : 'var(--surface)',
+              color:
+                activeMode === 'upgrader'
+                  ? isDark
+                    ? '#FBBF24'
+                    : '#1E1E24'
+                  : 'var(--text-primary)',
+              boxShadow: activeMode === 'upgrader' ? '2px 2px 0px var(--shadow-ink)' : 'none',
               cursor: 'pointer'
             }}
           >
@@ -152,7 +201,11 @@ export default function WritingLab() {
             <button
               onClick={handleRandomSpark}
               className="retro-btn-outline"
-              style={{ padding: '0.25rem 0.65rem', fontSize: '0.8rem', backgroundColor: '#FCE3A1' }}
+              style={{
+                padding: '0.25rem 0.65rem',
+                fontSize: '0.8rem',
+                backgroundColor: isDark ? '#2B1E05' : '#FCE3A1'
+              }}
             >
               <Shuffle size={14} /> Spark Story
             </button>
@@ -162,7 +215,7 @@ export default function WritingLab() {
               style={{
                 padding: '0.25rem 0.65rem',
                 fontSize: '0.8rem',
-                backgroundColor: skeletonMode ? '#16A34A' : '#1E1E24'
+                backgroundColor: skeletonMode ? 'var(--accent-green)' : 'var(--border-ink)'
               }}
             >
               {skeletonMode ? <Eye size={14} /> : <EyeOff size={14} />}
@@ -183,7 +236,7 @@ export default function WritingLab() {
                 })
               }
               className="retro-btn-primary"
-              style={{ padding: '0.25rem 0.75rem', fontSize: '0.8rem', backgroundColor: '#2329D6' }}
+              style={{ padding: '0.25rem 0.75rem', fontSize: '0.8rem', backgroundColor: 'var(--cobalt)' }}
             >
               <Pencil size={14} /> ✏️ Notebook Timer (3 Mins)
             </button>
@@ -199,24 +252,29 @@ export default function WritingLab() {
           {/* Paragraph Stepper Tabs */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem', flexShrink: 0 }}>
             <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', flexWrap: 'wrap' }}>
-              {currentBlueprint.paragraphs.map((para, idx) => (
-                <button
-                  key={para.id}
-                  onClick={() => setActiveParaIdx(idx)}
-                  style={{
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '8px',
-                    border: '2px solid #1E1E24',
-                    fontWeight: 900,
-                    fontSize: '0.84rem',
-                    backgroundColor: activeParaIdx === idx ? para.color : '#FFFFFF',
-                    boxShadow: activeParaIdx === idx ? '2px 2px 0px #1E1E24' : 'none',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {para.number}: {para.name.split(' ')[0]}
-                </button>
-              ))}
+              {currentBlueprint.paragraphs.map((para, idx) => {
+                const isActive = activeParaIdx === idx;
+                const paraColor = getParaColor(para.color);
+                return (
+                  <button
+                    key={para.id}
+                    onClick={() => setActiveParaIdx(idx)}
+                    style={{
+                      padding: '0.25rem 0.75rem',
+                      borderRadius: '8px',
+                      border: '2px solid var(--border-ink)',
+                      fontWeight: 900,
+                      fontSize: '0.84rem',
+                      backgroundColor: isActive ? paraColor : 'var(--surface)',
+                      color: isActive ? (isDark ? '#F8FAFC' : '#1E1E24') : 'var(--text-primary)',
+                      boxShadow: isActive ? '2px 2px 0px var(--shadow-ink)' : 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {para.number}: {para.name.split(' ')[0]}
+                  </button>
+                );
+              })}
             </div>
 
             <div style={{ display: 'flex', gap: '0.35rem' }}>
@@ -257,7 +315,10 @@ export default function WritingLab() {
             <div
               className="retro-window study-scrollable"
               style={{
-                backgroundColor: '#FFFFFF',
+                backgroundColor: 'var(--surface)',
+                border: '2.5px solid var(--border-ink)',
+                borderRadius: '20px',
+                boxShadow: '4px 4px 0px var(--shadow-ink)',
                 padding: '0.9rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -269,8 +330,8 @@ export default function WritingLab() {
               <div>
                 <div
                   style={{
-                    backgroundColor: currentPara.color,
-                    border: '2px solid #1E1E24',
+                    backgroundColor: getParaColor(currentPara.color),
+                    border: '2px solid var(--border-ink)',
                     borderRadius: '10px',
                     padding: '0.45rem 0.75rem',
                     display: 'flex',
@@ -279,10 +340,12 @@ export default function WritingLab() {
                     marginBottom: '0.65rem'
                   }}
                 >
-                  <strong style={{ fontSize: '0.95rem', color: '#1E1E24' }}>
+                  <strong style={{ fontSize: '0.95rem', color: isDark ? '#F8FAFC' : '#1E1E24' }}>
                     {currentPara.number}: {currentPara.name}
                   </strong>
-                  <span style={{ fontSize: '0.78rem', fontWeight: 800 }}>🎯 {currentPara.goal}</span>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 800, color: isDark ? '#E2E8F0' : '#1E1E24' }}>
+                    🎯 {currentPara.goal}
+                  </span>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
@@ -293,8 +356,16 @@ export default function WritingLab() {
                     return (
                       <div key={slot.id}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', fontSize: '0.82rem', fontWeight: 800 }}>
-                          <span>🧩 {slot.label}</span>
-                          <span style={{ backgroundColor: '#FAF7F0', border: '1px solid #1E1E24', padding: '0.1rem 0.4rem', borderRadius: '5px' }}>
+                          <span style={{ color: 'var(--text-primary)' }}>🧩 {slot.label}</span>
+                          <span
+                            style={{
+                              backgroundColor: 'var(--surface-alt)',
+                              border: '1px solid var(--border-ink)',
+                              padding: '0.1rem 0.4rem',
+                              borderRadius: '5px',
+                              color: 'var(--text-secondary)'
+                            }}
+                          >
                             Pattern: {slot.skeletonHint}
                           </span>
                         </div>
@@ -302,20 +373,21 @@ export default function WritingLab() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                           {slot.options.map((opt, idx) => {
                             const isSelected = picked === opt;
+                            const slotColor = getParaColor(currentPara.color);
                             return (
                               <button
                                 key={idx}
                                 onClick={() => handleSelectOption(currentPara.id, slot.id, opt)}
                                 style={{
                                   textAlign: 'left',
-                                  backgroundColor: isSelected ? currentPara.color : '#FAF7F0',
-                                  border: isSelected ? '2px solid #1E1E24' : '1.5px solid #CBD5E1',
-                                  boxShadow: isSelected ? '2px 2px 0px #1E1E24' : 'none',
+                                  backgroundColor: isSelected ? slotColor : 'var(--surface-alt)',
+                                  border: isSelected ? '2px solid var(--border-ink)' : '1.5px solid var(--border-ink)',
+                                  boxShadow: isSelected ? '2px 2px 0px var(--shadow-ink)' : 'none',
                                   borderRadius: '10px',
                                   padding: '0.5rem 0.75rem',
                                   fontSize: '0.92rem',
                                   fontWeight: isSelected ? 800 : 600,
-                                  color: '#1E1E24',
+                                  color: 'var(--text-primary)',
                                   cursor: 'pointer',
                                   display: 'flex',
                                   alignItems: 'center',
@@ -323,7 +395,7 @@ export default function WritingLab() {
                                 }}
                               >
                                 <span>{opt}</span>
-                                {isSelected && <CheckCircle2 size={16} color="#1E1E24" />}
+                                {isSelected && <CheckCircle2 size={16} color="var(--accent-green)" />}
                               </button>
                             );
                           })}
@@ -353,7 +425,7 @@ export default function WritingLab() {
                   <button
                     onClick={() => setActiveParaIdx((i) => i + 1)}
                     className="retro-btn-primary"
-                    style={{ padding: '0.3rem 0.75rem', fontSize: '0.82rem', backgroundColor: '#1E1E24' }}
+                    style={{ padding: '0.3rem 0.75rem', fontSize: '0.82rem', backgroundColor: 'var(--cobalt)' }}
                   >
                     Next Paragraph →
                   </button>
@@ -365,7 +437,10 @@ export default function WritingLab() {
             <div
               className="retro-window study-scrollable"
               style={{
-                backgroundColor: '#FAF7F0',
+                backgroundColor: 'var(--surface-alt)',
+                border: '2.5px solid var(--border-ink)',
+                borderRadius: '20px',
+                boxShadow: '4px 4px 0px var(--shadow-ink)',
                 padding: '0.9rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -379,7 +454,7 @@ export default function WritingLab() {
                   <span className="retro-pill-dark" style={{ fontSize: '0.72rem', padding: '0.2rem 0.55rem' }}>
                     {skeletonMode ? '🫣 SKELETON PROMPTS (STUDENTS WRITE)' : '📜 ASSEMBLED CLASS MASTERPIECE'}
                   </span>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#4B5563' }}>Section B • 10 Marks</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-secondary)' }}>Section B • 10 Marks</span>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
@@ -387,15 +462,16 @@ export default function WritingLab() {
                     const s1 = selectedBlocks[`${para.id}_s1`];
                     const s2 = selectedBlocks[`${para.id}_s2`];
                     const isCurrent = activeParaIdx === pIdx;
+                    const paraColor = getParaColor(para.color);
 
                     return (
                       <div
                         key={para.id}
                         onClick={() => setActiveParaIdx(pIdx)}
                         style={{
-                          backgroundColor: para.color,
-                          border: isCurrent ? '2.5px solid #1E1E24' : '1.5px solid rgba(30, 30, 36, 0.4)',
-                          boxShadow: isCurrent ? '3px 3px 0px #1E1E24' : 'none',
+                          backgroundColor: paraColor,
+                          border: isCurrent ? '2.5px solid var(--cobalt)' : '1.5px solid var(--border-ink)',
+                          boxShadow: isCurrent ? '3px 3px 0px var(--shadow-ink)' : 'none',
                           borderRadius: '12px',
                           padding: '0.65rem 0.85rem',
                           cursor: 'pointer',
@@ -403,20 +479,20 @@ export default function WritingLab() {
                         }}
                       >
                         <div style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '0.2rem', display: 'flex', justifyContent: 'space-between' }}>
-                          <span>{para.number}: {para.name}</span>
-                          {isCurrent && <span style={{ color: '#2329D6' }}>● ACTIVE</span>}
+                          <span style={{ color: isDark ? '#F8FAFC' : '#1E1E24' }}>{para.number}: {para.name}</span>
+                          {isCurrent && <span style={{ color: 'var(--cobalt)', fontWeight: 900 }}>● ACTIVE</span>}
                         </div>
 
                         {skeletonMode ? (
-                          <div style={{ fontSize: '0.94rem', fontWeight: 800, color: '#1E1E24', lineHeight: 1.4 }}>
+                          <div style={{ fontSize: '0.94rem', fontWeight: 800, color: isDark ? '#F1F5F9' : '#1E1E24', lineHeight: 1.4 }}>
                             {para.slots.map((s) => s.skeletonHint).join(' ')}
                           </div>
                         ) : s1 || s2 ? (
-                          <div style={{ fontSize: '0.96rem', fontWeight: 700, color: '#1E1E24', lineHeight: 1.4 }}>
+                          <div style={{ fontSize: '0.96rem', fontWeight: 700, color: isDark ? '#F8FAFC' : '#1E1E24', lineHeight: 1.4 }}>
                             {s1 || '...'} {s2 || '...'}
                           </div>
                         ) : (
-                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#6B7280', fontStyle: 'italic' }}>
+                          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', fontStyle: 'italic' }}>
                             Tap options on the left to build this paragraph...
                           </div>
                         )}
@@ -427,7 +503,7 @@ export default function WritingLab() {
               </div>
 
               {/* Bottom Quick Notebook Link */}
-              <div style={{ marginTop: '0.65rem', paddingTop: '0.45rem', borderTop: '1.5px dashed #CBD5E1' }}>
+              <div style={{ marginTop: '0.65rem', paddingTop: '0.45rem', borderTop: '1.5px dashed var(--border-ink)' }}>
                 <button
                   onClick={() =>
                     setNotebookModal({
@@ -443,7 +519,7 @@ export default function WritingLab() {
                     })
                   }
                   className="retro-btn-primary"
-                  style={{ width: '100%', justifyContent: 'center', backgroundColor: '#2329D6', padding: '0.45rem', fontSize: '0.85rem' }}
+                  style={{ width: '100%', justifyContent: 'center', backgroundColor: 'var(--cobalt)', padding: '0.45rem', fontSize: '0.85rem' }}
                 >
                   <Pencil size={15} /> ✏️ Notebook Bridge (3 Min Countdown)
                 </button>
@@ -462,7 +538,7 @@ export default function WritingLab() {
             {[...WRITING_ARCHITECT_DATA.sentenceUpgrader, ...customCards].map((clinic, idx) => {
               const stageIdx = upgraderStages[clinic.id] || 0;
               const currentStage = clinic.stages[stageIdx] || clinic.stages[0];
-              const themes = ['#F9BDD5', '#FCE3A1', '#92C5E3', '#F1DFFE'];
+              const themes = isDark ? DARK_CLINIC_THEMES : LIGHT_CLINIC_THEMES;
 
               return (
                 <div
@@ -470,6 +546,9 @@ export default function WritingLab() {
                   className="retro-window"
                   style={{
                     backgroundColor: themes[idx % themes.length],
+                    border: '2.5px solid var(--border-ink)',
+                    borderRadius: '20px',
+                    boxShadow: '4px 4px 0px var(--shadow-ink)',
                     padding: '0.85rem',
                     display: 'flex',
                     flexDirection: 'column',
@@ -480,8 +559,8 @@ export default function WritingLab() {
                     <span className="retro-pill-dark" style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem', marginBottom: '0.4rem' }}>
                       🛠️ CLINIC #{idx + 1}
                     </span>
-                    <h4 style={{ fontSize: '1.05rem', fontWeight: 900, marginBottom: '0.3rem' }}>{clinic.title}</h4>
-                    <p style={{ fontSize: '0.8rem', fontWeight: 600, color: '#374151', marginBottom: '0.55rem' }}>{clinic.weakProblem}</p>
+                    <h4 style={{ fontSize: '1.05rem', fontWeight: 900, marginBottom: '0.3rem', color: 'var(--text-primary)' }}>{clinic.title}</h4>
+                    <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.55rem' }}>{clinic.weakProblem}</p>
 
                     <div style={{ display: 'flex', gap: '0.3rem', marginBottom: '0.55rem', flexWrap: 'wrap' }}>
                       {clinic.stages.map((st, sIdx) => (
@@ -493,9 +572,9 @@ export default function WritingLab() {
                             fontWeight: 800,
                             padding: '0.2rem 0.5rem',
                             borderRadius: '6px',
-                            border: '1.5px solid #1E1E24',
-                            backgroundColor: stageIdx === sIdx ? '#1E1E24' : '#FFFFFF',
-                            color: stageIdx === sIdx ? '#FFFFFF' : '#1E1E24',
+                            border: '1.5px solid var(--border-ink)',
+                            backgroundColor: stageIdx === sIdx ? 'var(--cobalt)' : 'var(--surface)',
+                            color: stageIdx === sIdx ? '#FFFFFF' : 'var(--text-primary)',
                             cursor: 'pointer'
                           }}
                         >
@@ -506,11 +585,11 @@ export default function WritingLab() {
 
                     <div
                       style={{
-                        backgroundColor: '#FFFFFF',
-                        border: '2px solid #1E1E24',
+                        backgroundColor: 'var(--surface)',
+                        border: '2px solid var(--border-ink)',
                         borderRadius: '10px',
                         padding: '0.75rem',
-                        boxShadow: '2px 2px 0px #1E1E24',
+                        boxShadow: '2px 2px 0px var(--shadow-ink)',
                         marginBottom: '0.5rem'
                       }}
                     >
@@ -518,14 +597,25 @@ export default function WritingLab() {
                         style={{
                           fontSize: '1.05rem',
                           fontWeight: 900,
-                          color: stageIdx === 0 ? '#B91C1C' : stageIdx === 1 ? '#1E40AF' : '#15803D',
+                          color:
+                            stageIdx === 0
+                              ? isDark
+                                ? '#F87171'
+                                : '#B91C1C'
+                              : stageIdx === 1
+                              ? isDark
+                                ? '#60A5FA'
+                                : '#1E40AF'
+                              : isDark
+                              ? '#4ADE80'
+                              : '#15803D',
                           lineHeight: 1.4,
                           marginBottom: '0.35rem'
                         }}
                       >
                         &ldquo;{currentStage.text}&rdquo;
                       </div>
-                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#4B5563', borderTop: '1px dashed #CBD5E1', paddingTop: '0.35rem' }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-secondary)', borderTop: '1px dashed var(--border-ink)', paddingTop: '0.35rem' }}>
                         💡 {currentStage.notes}
                       </div>
                     </div>
@@ -553,17 +643,19 @@ export default function WritingLab() {
           <div
             className="retro-window"
             style={{
-              backgroundColor: '#FFFFFF',
-              padding: '1rem',
-              border: '2px solid #1E1E24'
+              backgroundColor: 'var(--surface)',
+              border: '2.5px solid var(--border-ink)',
+              borderRadius: '20px',
+              boxShadow: '4px 4px 0px var(--shadow-ink)',
+              padding: '1rem'
             }}
           >
-            <div style={{ fontWeight: 900, fontSize: '1rem', marginBottom: '0.35rem' }}>
+            <div style={{ fontWeight: 900, fontSize: '1rem', marginBottom: '0.35rem', color: 'var(--text-primary)' }}>
               👩‍🏫 Add a Real Sentence from a Student&rsquo;s Book to Upgrade Together:
             </div>
             <form onSubmit={handleAddCustomClinic} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '0.75rem', alignItems: 'end' }}>
               <div>
-                <label style={{ fontWeight: 800, fontSize: '0.78rem', display: 'block', marginBottom: '0.2rem' }}>
+                <label style={{ fontWeight: 800, fontSize: '0.78rem', display: 'block', marginBottom: '0.2rem', color: 'var(--text-secondary)' }}>
                   1. Weak Student Draft:
                 </label>
                 <input
@@ -574,7 +666,7 @@ export default function WritingLab() {
                 />
               </div>
               <div>
-                <label style={{ fontWeight: 800, fontSize: '0.78rem', display: 'block', marginBottom: '0.2rem' }}>
+                <label style={{ fontWeight: 800, fontSize: '0.78rem', display: 'block', marginBottom: '0.2rem', color: 'var(--text-secondary)' }}>
                   2. Upgraded Superstar Version:
                 </label>
                 <input
@@ -587,7 +679,7 @@ export default function WritingLab() {
               <button
                 type="submit"
                 className="retro-btn-primary"
-                style={{ backgroundColor: '#2329D6', height: '40px', padding: '0.4rem 0.85rem', fontSize: '0.85rem' }}
+                style={{ backgroundColor: 'var(--cobalt)', height: '40px', padding: '0.4rem 0.85rem', fontSize: '0.85rem' }}
               >
                 <PlusCircle size={15} /> Add to Board
               </button>

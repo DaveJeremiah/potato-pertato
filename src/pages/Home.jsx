@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import RibbonCard from '../components/RibbonCard';
 import {
   Sparkles,
@@ -14,8 +15,7 @@ import {
   Train,
   Key,
   Settings,
-  ArrowUpRight,
-  Pencil
+  ArrowUpRight
 } from 'lucide-react';
 
 const SECTION_THEMES = [
@@ -236,6 +236,7 @@ const ALL_MODULES = [
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const { isDark } = useTheme();
   const navigate = useNavigate();
 
   const filteredModules =
@@ -249,7 +250,7 @@ export default function Home() {
       <div
         className="retro-window"
         style={{
-          backgroundColor: '#FAF7F0',
+          backgroundColor: 'var(--bg-card)',
           position: 'relative',
           overflow: 'hidden',
           padding: '2.5rem 2.25rem'
@@ -267,9 +268,9 @@ export default function Home() {
             zIndex: 0
           }}
         >
-          <div style={{ width: '70px', height: '16px', backgroundColor: '#EF4444', border: '2px solid #1E1E24', borderRight: 'none' }} />
-          <div style={{ width: '95px', height: '16px', backgroundColor: '#2329D6', border: '2px solid #1E1E24', borderRight: 'none' }} />
-          <div style={{ width: '55px', height: '16px', backgroundColor: '#F59E0B', border: '2px solid #1E1E24', borderRight: 'none' }} />
+          <div style={{ width: '70px', height: '16px', backgroundColor: '#EF4444', border: '2px solid var(--border-ink)', borderRight: 'none' }} />
+          <div style={{ width: '95px', height: '16px', backgroundColor: '#2329D6', border: '2px solid var(--border-ink)', borderRight: 'none' }} />
+          <div style={{ width: '55px', height: '16px', backgroundColor: '#F59E0B', border: '2px solid var(--border-ink)', borderRight: 'none' }} />
         </div>
 
         <div
@@ -289,14 +290,15 @@ export default function Home() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                backgroundColor: '#FCE3A1',
-                border: '2px solid #1E1E24',
-                boxShadow: '3px 3px 0px #1E1E24',
+                backgroundColor: 'var(--card-yellow)',
+                border: '2px solid var(--border-ink)',
+                boxShadow: '3px 3px 0px var(--shadow-ink)',
                 padding: '0.35rem 0.9rem',
                 borderRadius: '999px',
                 fontWeight: 800,
                 fontSize: '0.85rem',
-                marginBottom: '1.1rem'
+                marginBottom: '1.1rem',
+                color: 'var(--text-primary)'
               }}
             >
               <span>🥔 POTATO PERTATO • GRADE 4 SMARTBOARD INSPIRER</span>
@@ -307,7 +309,7 @@ export default function Home() {
                 fontSize: 'clamp(2.2rem, 4vw, 3.35rem)',
                 fontWeight: 900,
                 lineHeight: 1.08,
-                color: '#1E1E24',
+                color: 'var(--text-primary)',
                 marginBottom: '1rem',
                 letterSpacing: '-0.02em'
               }}
@@ -315,12 +317,12 @@ export default function Home() {
               SPARK THE LIGHTBULB.{' '}
               <span
                 style={{
-                  backgroundColor: '#F1DFFE',
+                  backgroundColor: 'var(--card-purple)',
                   padding: '0 0.45rem',
-                  border: '2.5px solid #1E1E24',
+                  border: '2.5px solid var(--border-ink)',
                   borderRadius: '12px',
                   display: 'inline-block',
-                  boxShadow: '4px 4px 0px #1E1E24'
+                  boxShadow: '4px 4px 0px var(--shadow-ink)'
                 }}
               >
                 INSPIRE
@@ -332,7 +334,7 @@ export default function Home() {
               style={{
                 fontSize: '1.12rem',
                 fontWeight: 600,
-                color: '#374151',
+                color: 'var(--text-secondary)',
                 lineHeight: 1.55,
                 marginBottom: '1.6rem',
                 maxWidth: '620px'
@@ -348,7 +350,7 @@ export default function Home() {
               <Link to="/exam-revision?paper=fiction" className="retro-btn-primary" style={{ backgroundColor: '#EA580C', textDecoration: 'none', fontSize: '1.05rem', padding: '0.85rem 1.5rem' }}>
                 🐉 Revise Paper 2 (Fiction)
               </Link>
-              <Link to="/writing-lab" className="retro-btn-outline" style={{ backgroundColor: '#C7E0CD', textDecoration: 'none', fontSize: '1.05rem', padding: '0.85rem 1.4rem' }}>
+              <Link to="/writing-lab" className="retro-btn-outline" style={{ backgroundColor: 'var(--card-green)', textDecoration: 'none', fontSize: '1.05rem', padding: '0.85rem 1.4rem' }}>
                 <Blocks size={18} /> Story Block Architect
               </Link>
             </div>
@@ -357,12 +359,13 @@ export default function Home() {
           {/* Right Hero Featured Showcase Card (Lesson 1 Quick-Launch Box) */}
           <div
             style={{
-              backgroundColor: '#F1DFFE',
-              border: '3px solid #1E1E24',
+              backgroundColor: 'var(--card-purple)',
+              border: '3px solid var(--border-ink)',
               borderRadius: '24px',
               padding: '1.6rem',
-              boxShadow: '7px 7px 0px #1E1E24',
-              position: 'relative'
+              boxShadow: '7px 7px 0px var(--shadow-ink)',
+              position: 'relative',
+              color: 'var(--text-primary)'
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
@@ -370,29 +373,29 @@ export default function Home() {
               <span style={{ fontSize: '1.5rem' }}>👀</span>
             </div>
 
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '0.6rem', color: '#1E1E24' }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '0.6rem', color: 'var(--text-primary)' }}>
               End-of-Term 1 Exam Revision Kit
             </h3>
-            <p style={{ fontSize: '0.96rem', fontWeight: 600, color: '#2D2D35', marginBottom: '1.15rem', lineHeight: 1.45 }}>
+            <p style={{ fontSize: '0.96rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '1.15rem', lineHeight: 1.45 }}>
               Designed so even your weakest readers can follow along without feeling overwhelmed:
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.65rem', marginBottom: '1.2rem' }}>
-              <div style={{ backgroundColor: '#FFFFFF', border: '2px solid #1E1E24', borderRadius: '12px', padding: '0.7rem' }}>
-                <div style={{ fontWeight: 900, fontSize: '0.88rem', color: '#2329D6' }}>🔦 1. Clue Spotlight</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>Highlights the exact exam line for weak readers</div>
+              <div style={{ backgroundColor: 'var(--surface)', border: '2px solid var(--border-ink)', borderRadius: '12px', padding: '0.7rem' }}>
+                <div style={{ fontWeight: 900, fontSize: '0.88rem', color: '#3B82F6' }}>🔦 1. Clue Spotlight</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Highlights exact exam lines</div>
               </div>
-              <div style={{ backgroundColor: '#FFFFFF', border: '2px solid #1E1E24', borderRadius: '12px', padding: '0.7rem' }}>
-                <div style={{ fontWeight: 900, fontSize: '0.88rem', color: '#15803D' }}>🧩 2. P.Q.A. Blocks</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>Cures 1-word fragment answers on the board</div>
+              <div style={{ backgroundColor: 'var(--surface)', border: '2px solid var(--border-ink)', borderRadius: '12px', padding: '0.7rem' }}>
+                <div style={{ fontWeight: 900, fontSize: '0.88rem', color: '#22C55E' }}>🧩 2. P.Q.A. Blocks</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Cures 1-word fragment answers</div>
               </div>
-              <div style={{ backgroundColor: '#FFFFFF', border: '2px solid #1E1E24', borderRadius: '12px', padding: '0.7rem' }}>
-                <div style={{ fontWeight: 900, fontSize: '0.88rem', color: '#B45309' }}>🔧 3. Punctuation Tap</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>All 10 exam sentences ready to fix by touch</div>
+              <div style={{ backgroundColor: 'var(--surface)', border: '2px solid var(--border-ink)', borderRadius: '12px', padding: '0.7rem' }}>
+                <div style={{ fontWeight: 900, fontSize: '0.88rem', color: '#F59E0B' }}>🔧 3. Punctuation Tap</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>10 exam sentences to fix</div>
               </div>
-              <div style={{ backgroundColor: '#FFFFFF', border: '2px solid #1E1E24', borderRadius: '12px', padding: '0.7rem' }}>
-                <div style={{ fontWeight: 900, fontSize: '0.88rem', color: '#BE185D' }}>✏️ 4. Notebook Bridge</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>Built-in timer so students write it on paper!</div>
+              <div style={{ backgroundColor: 'var(--surface)', border: '2px solid var(--border-ink)', borderRadius: '12px', padding: '0.7rem' }}>
+                <div style={{ fontWeight: 900, fontSize: '0.88rem', color: '#EC4899' }}>✏️ 4. Notebook Bridge</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Built-in timer for paper practice</div>
               </div>
             </div>
 
@@ -406,8 +409,8 @@ export default function Home() {
                 width: '100%',
                 backgroundColor: '#EA580C',
                 color: '#FFFFFF',
-                border: '2.5px solid #1E1E24',
-                boxShadow: '4px 4px 0px #1E1E24',
+                border: '2.5px solid var(--border-ink)',
+                boxShadow: '4px 4px 0px var(--shadow-ink)',
                 borderRadius: '999px',
                 padding: '0.75rem 1.25rem',
                 fontWeight: 900,
@@ -421,17 +424,17 @@ export default function Home() {
       </div>
 
       {/* =========================================================
-          2. THE 6 COLOR RIBBON WORLDS (Directly from Inspiration Image 1)
+          2. THE 6 COLOR RIBBON WORLDS
          ========================================================= */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '1.1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div>
             <span className="retro-pill-dark">🎨 6 LEARNING WORLDS</span>
-            <h2 style={{ fontSize: '1.85rem', fontWeight: 900, marginTop: '0.4rem', color: '#1E1E24' }}>
+            <h2 style={{ fontSize: '1.85rem', fontWeight: 900, marginTop: '0.4rem', color: 'var(--text-primary)' }}>
               Pick a Colour Section to Spark Today&rsquo;s Lesson
             </h2>
           </div>
-          <span style={{ fontWeight: 700, color: '#4B5563', fontSize: '0.95rem' }}>
+          <span style={{ fontWeight: 700, color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
             Tap any colour card to open that station on the Smartboard →
           </span>
         </div>
@@ -458,9 +461,10 @@ export default function Home() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.4rem',
-                  backgroundColor: '#FFFFFF',
-                  border: '2px solid #1E1E24',
-                  boxShadow: '3px 3px 0px #1E1E24',
+                  backgroundColor: 'var(--surface)',
+                  color: 'var(--text-primary)',
+                  border: '2px solid var(--border-ink)',
+                  boxShadow: '3px 3px 0px var(--shadow-ink)',
                   padding: '0.45rem 0.95rem',
                   borderRadius: '999px',
                   fontWeight: 800,
@@ -475,14 +479,14 @@ export default function Home() {
       </div>
 
       {/* =========================================================
-          3. "EXPLORE MODULES" RETRO FRAMED CONTAINER (From Image 3)
+          3. "EXPLORE MODULES" RETRO FRAMED CONTAINER
          ========================================================= */}
-      <div className="retro-window" style={{ backgroundColor: '#FAF7F0' }}>
+      <div className="retro-window" style={{ backgroundColor: 'var(--bg-card)' }}>
         {/* Lavender Top Header Bar with Centered Dark Tab & Stripes */}
         <div
           style={{
-            backgroundColor: '#DEC6F3',
-            borderBottom: '3px solid #1E1E24',
+            backgroundColor: isDark ? '#231533' : '#DEC6F3',
+            borderBottom: '3px solid var(--border-ink)',
             padding: '0.9rem 1.5rem',
             display: 'flex',
             alignItems: 'center',
@@ -497,11 +501,11 @@ export default function Home() {
 
           <div
             style={{
-              backgroundColor: '#2D2D35',
+              backgroundColor: isDark ? '#0D0F17' : '#2D2D35',
               color: '#FFFFFF',
               padding: '0.45rem 1.4rem',
               borderRadius: '10px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 900,
               letterSpacing: '0.06em',
               fontSize: '0.9rem'
@@ -512,24 +516,24 @@ export default function Home() {
 
           {/* 3 Vertical Retro Stripes */}
           <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <div style={{ width: '14px', height: '32px', backgroundColor: '#EF4444', border: '2px solid #1E1E24' }} />
-            <div style={{ width: '14px', height: '32px', backgroundColor: '#2329D6', border: '2px solid #1E1E24' }} />
-            <div style={{ width: '14px', height: '32px', backgroundColor: '#F59E0B', border: '2px solid #1E1E24' }} />
+            <div style={{ width: '14px', height: '32px', backgroundColor: '#EF4444', border: '2px solid var(--border-ink)' }} />
+            <div style={{ width: '14px', height: '32px', backgroundColor: '#2329D6', border: '2px solid var(--border-ink)' }} />
+            <div style={{ width: '14px', height: '32px', backgroundColor: '#F59E0B', border: '2px solid var(--border-ink)' }} />
           </div>
         </div>
 
         {/* Inner Body */}
         <div style={{ padding: '2rem 1.75rem' }}>
           <div style={{ textAlign: 'center', maxWidth: '680px', margin: '0 auto 1.75rem auto' }}>
-            <h2 style={{ fontSize: '1.75rem', fontWeight: 900, marginBottom: '0.45rem', color: '#1E1E24' }}>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: 900, marginBottom: '0.45rem', color: 'var(--text-primary)' }}>
               👀 Find the right interactive module to spark your class
             </h2>
-            <p style={{ color: '#4B5563', fontWeight: 600, fontSize: '0.98rem' }}>
+            <p style={{ color: 'var(--text-secondary)', fontWeight: 600, fontSize: '0.98rem' }}>
               We believe in the power of the teacher&rsquo;s voice, whole-class energy on the Smartboard, and independent practice in every student&rsquo;s exercise book.
             </p>
           </div>
 
-          {/* Filter Pills (Exact Magnum Blue Pill Style) */}
+          {/* Filter Pills */}
           <div
             style={{
               display: 'flex',
@@ -552,7 +556,7 @@ export default function Home() {
                 onClick={() => setActiveFilter(tab.id)}
                 className={activeFilter === tab.id ? 'retro-pill-active' : 'retro-pill-inactive'}
                 style={{
-                  backgroundColor: activeFilter === tab.id ? '#2329D6' : '#FFFFFF',
+                  backgroundColor: activeFilter === tab.id ? '#2329D6' : 'var(--surface)',
                   minWidth: '130px',
                   justifyContent: 'center'
                 }}
@@ -562,7 +566,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* 3-Column Retro Course Card Grid (Exact Magnum Card Layout) */}
+          {/* 3-Column Retro Course Card Grid */}
           <div
             style={{
               display: 'grid',
@@ -576,10 +580,10 @@ export default function Home() {
                 <div
                   key={mod.id}
                   style={{
-                    backgroundColor: '#FFFFFF',
-                    border: '2.5px solid #1E1E24',
+                    backgroundColor: 'var(--surface)',
+                    border: '2.5px solid var(--border-ink)',
                     borderRadius: '20px',
-                    boxShadow: '6px 6px 0px #1E1E24',
+                    boxShadow: '6px 6px 0px var(--shadow-ink)',
                     padding: '1.15rem',
                     display: 'flex',
                     flexDirection: 'column',
@@ -602,41 +606,40 @@ export default function Home() {
                       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <div
                           style={{
-                            backgroundColor: '#FFFFFF',
-                            border: '2px solid #1E1E24',
+                            backgroundColor: 'var(--surface)',
+                            border: '2px solid var(--border-ink)',
                             borderRadius: '12px',
                             padding: '0.5rem',
                             display: 'inline-flex',
-                            boxShadow: '2px 2px 0px #1E1E24'
+                            boxShadow: '2px 2px 0px var(--shadow-ink)'
                           }}
                         >
-                          <IconComp size={26} color="#1E1E24" />
+                          <IconComp size={26} color="var(--text-primary)" />
                         </div>
                       </div>
                     </RibbonCard>
 
-                    <h3 style={{ fontSize: '1.3rem', fontWeight: 900, color: '#1E1E24', marginBottom: '0.35rem' }}>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
                       {mod.title}
                     </h3>
 
-                    {/* Two-column metadata row like "20 Classes | Age 11-14" */}
                     <div
                       style={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         fontSize: '0.82rem',
                         fontWeight: 800,
-                        color: '#6B7280',
+                        color: 'var(--text-secondary)',
                         marginBottom: '0.65rem',
                         paddingBottom: '0.45rem',
-                        borderBottom: '1.5px dashed #E5E7EB'
+                        borderBottom: '1.5px dashed var(--border-ink)'
                       }}
                     >
                       <span>{mod.metaLeft}</span>
                       <span>{mod.metaRight}</span>
                     </div>
 
-                    <p style={{ fontSize: '0.92rem', fontWeight: 600, color: '#374151', lineHeight: 1.48, marginBottom: '1.25rem' }}>
+                    <p style={{ fontSize: '0.92rem', fontWeight: 600, color: 'var(--text-secondary)', lineHeight: 1.48, marginBottom: '1.25rem' }}>
                       {mod.desc}
                     </p>
                   </div>
@@ -649,22 +652,16 @@ export default function Home() {
                       justifyContent: 'center',
                       gap: '0.4rem',
                       width: '100%',
-                      backgroundColor: '#FFFFFF',
-                      color: '#1E1E24',
-                      border: '2.5px solid #1E1E24',
-                      boxShadow: '4px 4px 0px #1E1E24',
+                      backgroundColor: 'var(--surface-alt)',
+                      color: 'var(--text-primary)',
+                      border: '2.5px solid var(--border-ink)',
+                      boxShadow: '4px 4px 0px var(--shadow-ink)',
                       borderRadius: '12px',
                       padding: '0.7rem 1rem',
                       fontWeight: 900,
                       fontSize: '0.95rem',
                       textDecoration: 'none',
                       transition: 'transform 0.12s ease, background-color 0.12s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#FCE3A1';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#FFFFFF';
                     }}
                   >
                     {mod.btnText}

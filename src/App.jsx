@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Home from './pages/Home';
 import ExamRevisionStudio from './pages/ExamRevisionStudio';
 import PunctuationClinic from './pages/PunctuationClinic';
@@ -23,12 +24,15 @@ import {
   ArrowLeft,
   Maximize2,
   Minimize2,
-  ChevronDown
+  ChevronDown,
+  Sun,
+  Moon
 } from 'lucide-react';
 import './index.css';
 
 function MainNavbar({ onOpenNotebook }) {
   const location = useLocation();
+  const { isDark, toggleTheme } = useTheme();
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -36,24 +40,24 @@ function MainNavbar({ onOpenNotebook }) {
       {/* Brand Identity */}
       <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
         <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-          <span style={{ width: '7px', height: '24px', backgroundColor: '#EF4444', borderRadius: '4px', border: '1.5px solid #1E1E24' }} />
-          <span style={{ width: '7px', height: '28px', backgroundColor: '#2329D6', borderRadius: '4px', border: '1.5px solid #1E1E24' }} />
-          <span style={{ width: '7px', height: '20px', backgroundColor: '#F59E0B', borderRadius: '4px', border: '1.5px solid #1E1E24' }} />
+          <span style={{ width: '7px', height: '24px', backgroundColor: '#EF4444', borderRadius: '4px', border: '1.5px solid var(--border-ink)' }} />
+          <span style={{ width: '7px', height: '28px', backgroundColor: '#2329D6', borderRadius: '4px', border: '1.5px solid var(--border-ink)' }} />
+          <span style={{ width: '7px', height: '20px', backgroundColor: '#F59E0B', borderRadius: '4px', border: '1.5px solid var(--border-ink)' }} />
         </div>
         <div>
-          <span style={{ fontSize: '1.45rem', fontWeight: 900, color: '#1E1E24', letterSpacing: '-0.02em' }}>
+          <span style={{ fontSize: '1.45rem', fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
             Potato Pertato
           </span>
           <span
             style={{
               marginLeft: '0.5rem',
-              backgroundColor: '#F1DFFE',
-              border: '1.5px solid #1E1E24',
+              backgroundColor: 'var(--card-purple)',
+              border: '1.5px solid var(--border-ink)',
               padding: '0.12rem 0.5rem',
               borderRadius: '999px',
               fontSize: '0.7rem',
               fontWeight: 800,
-              color: '#1E1E24'
+              color: 'var(--text-primary)'
             }}
           >
             GRADE 4 INSPIRER
@@ -80,8 +84,17 @@ function MainNavbar({ onOpenNotebook }) {
         </Link>
       </div>
 
-      {/* Right Action */}
+      {/* Right Action Bar: Theme Toggle + Notebook Timer */}
       <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+        <button
+          onClick={toggleTheme}
+          className="retro-theme-toggle"
+          title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode`}
+        >
+          {isDark ? <Sun size={16} color="#FBBF24" /> : <Moon size={16} color="#6366F1" />}
+          <span>{isDark ? 'Light' : 'Dark'}</span>
+        </button>
+
         <button
           onClick={onOpenNotebook}
           className="retro-btn-primary"
@@ -101,6 +114,7 @@ function MainNavbar({ onOpenNotebook }) {
 
 function StudyTopBar({ onOpenNotebook }) {
   const location = useLocation();
+  const { isDark, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -119,29 +133,29 @@ function StudyTopBar({ onOpenNotebook }) {
   const getPageInfo = () => {
     switch (location.pathname) {
       case '/exam-revision':
-        return { label: 'Exam Revision Studio', color: '#F5C0A1' };
+        return { label: 'Exam Revision Studio', color: 'var(--card-orange)' };
       case '/punctuation-clinic':
-        return { label: 'Punctuation Surgery', color: '#FCE3A1' };
+        return { label: 'Punctuation Surgery', color: 'var(--card-yellow)' };
       case '/writing-lab':
-        return { label: 'Story & Writing Lab', color: '#C7E0CD' };
+        return { label: 'Story & Writing Lab', color: 'var(--card-green)' };
       case '/riddle-match':
-        return { label: 'Riddle Matcher', color: '#F9BDD5' };
+        return { label: 'Riddle Matcher', color: 'var(--card-pink)' };
       case '/play':
-        return { label: 'Category Matcher', color: '#92C5E3' };
+        return { label: 'Category Matcher', color: 'var(--card-blue)' };
       case '/train':
-        return { label: 'Sentence Train', color: '#FCE3A1' };
+        return { label: 'Sentence Train', color: 'var(--card-yellow)' };
       case '/memory':
-        return { label: 'Memory Match', color: '#F1DFFE' };
+        return { label: 'Memory Match', color: 'var(--card-purple)' };
       case '/balloon':
-        return { label: 'Balloon Pop', color: '#F5C0A1' };
+        return { label: 'Balloon Pop', color: 'var(--card-orange)' };
       case '/magnetic':
-        return { label: 'Magnetic Poetry', color: '#C7E0CD' };
+        return { label: 'Magnetic Poetry', color: 'var(--card-green)' };
       case '/escape':
-        return { label: 'Riddle Escape Room', color: '#92C5E3' };
+        return { label: 'Riddle Escape Room', color: 'var(--card-blue)' };
       case '/editor':
-        return { label: 'Content Editor', color: '#FAF7F0' };
+        return { label: 'Content Editor', color: 'var(--surface)' };
       default:
-        return { label: 'Smartboard Mode', color: '#F1DFFE' };
+        return { label: 'Smartboard Mode', color: 'var(--card-purple)' };
     }
   };
 
@@ -150,7 +164,7 @@ function StudyTopBar({ onOpenNotebook }) {
   return (
     <div className="study-top-strip">
       {/* Left: Exit to Home */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <Link
           to="/"
           className="retro-btn-outline"
@@ -161,8 +175,7 @@ function StudyTopBar({ onOpenNotebook }) {
             textDecoration: 'none',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '0.35rem',
-            backgroundColor: '#FFFFFF'
+            gap: '0.35rem'
           }}
         >
           <ArrowLeft size={15} /> Dashboard
@@ -177,12 +190,12 @@ function StudyTopBar({ onOpenNotebook }) {
               alignItems: 'center',
               gap: '0.35rem',
               backgroundColor: page.color,
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               borderRadius: '999px',
               padding: '0.35rem 0.85rem',
               fontWeight: 800,
               fontSize: '0.86rem',
-              color: '#1E1E24',
+              color: 'var(--text-primary)',
               cursor: 'pointer'
             }}
           >
@@ -197,10 +210,10 @@ function StudyTopBar({ onOpenNotebook }) {
                 position: 'absolute',
                 top: '115%',
                 left: 0,
-                backgroundColor: '#FFFFFF',
-                border: '2.5px solid #1E1E24',
+                backgroundColor: 'var(--surface)',
+                border: '2.5px solid var(--border-ink)',
                 borderRadius: '16px',
-                boxShadow: '5px 5px 0px #1E1E24',
+                boxShadow: '5px 5px 0px var(--shadow-ink)',
                 padding: '0.5rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -226,9 +239,9 @@ function StudyTopBar({ onOpenNotebook }) {
                     textDecoration: 'none',
                     fontWeight: 700,
                     fontSize: '0.88rem',
-                    color: '#1E1E24',
+                    color: 'var(--text-primary)',
                     borderRadius: '8px',
-                    backgroundColor: location.pathname === item.path ? '#FCE3A1' : 'transparent'
+                    backgroundColor: location.pathname === item.path ? 'var(--card-yellow)' : 'transparent'
                   }}
                 >
                   {item.label}
@@ -239,8 +252,18 @@ function StudyTopBar({ onOpenNotebook }) {
         </div>
       </div>
 
-      {/* Right Controls: Notebook Timer + Fullscreen */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      {/* Right Controls: Dark Mode Toggle + Notebook Timer + Fullscreen */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+        <button
+          onClick={toggleTheme}
+          className="retro-theme-toggle"
+          title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode`}
+          style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+        >
+          {isDark ? <Sun size={15} color="#FBBF24" /> : <Moon size={15} color="#6366F1" />}
+          <span>{isDark ? 'Light' : 'Dark'}</span>
+        </button>
+
         <button
           onClick={onOpenNotebook}
           className="retro-btn-primary"
@@ -251,7 +274,7 @@ function StudyTopBar({ onOpenNotebook }) {
             backgroundColor: '#2329D6'
           }}
         >
-          <Pencil size={14} /> Pencils Up (Timer)
+          <Pencil size={14} /> Pencils Up
         </button>
 
         <button
@@ -261,8 +284,7 @@ function StudyTopBar({ onOpenNotebook }) {
           style={{
             padding: '0.35rem 0.65rem',
             borderRadius: '999px',
-            fontSize: '0.82rem',
-            backgroundColor: '#FFFFFF'
+            fontSize: '0.82rem'
           }}
         >
           {isFullscreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
@@ -292,37 +314,39 @@ function App() {
   const [globalNotebookOpen, setGlobalNotebookOpen] = useState(false);
 
   return (
-    <Router>
-      <LayoutShell onOpenNotebook={() => setGlobalNotebookOpen(true)}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/exam-revision" element={<ExamRevisionStudio />} />
-          <Route path="/punctuation-clinic" element={<PunctuationClinic />} />
-          <Route path="/writing-lab" element={<WritingLab />} />
-          <Route path="/play" element={<MatcherGame />} />
-          <Route path="/memory" element={<MemoryMatch />} />
-          <Route path="/balloon" element={<BalloonPop />} />
-          <Route path="/magnetic" element={<MagneticPoetry />} />
-          <Route path="/train" element={<SentenceTrain />} />
-          <Route path="/escape" element={<EscapeRoom />} />
-          <Route path="/riddle-match" element={<RiddleMatch />} />
-          <Route path="/editor" element={<Editor />} />
-        </Routes>
+    <ThemeProvider>
+      <Router>
+        <LayoutShell onOpenNotebook={() => setGlobalNotebookOpen(true)}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/exam-revision" element={<ExamRevisionStudio />} />
+            <Route path="/punctuation-clinic" element={<PunctuationClinic />} />
+            <Route path="/writing-lab" element={<WritingLab />} />
+            <Route path="/play" element={<MatcherGame />} />
+            <Route path="/memory" element={<MemoryMatch />} />
+            <Route path="/balloon" element={<BalloonPop />} />
+            <Route path="/magnetic" element={<MagneticPoetry />} />
+            <Route path="/train" element={<SentenceTrain />} />
+            <Route path="/escape" element={<EscapeRoom />} />
+            <Route path="/riddle-match" element={<RiddleMatch />} />
+            <Route path="/editor" element={<Editor />} />
+          </Routes>
 
-        <NotebookBridgeModal
-          isOpen={globalNotebookOpen}
-          onClose={() => setGlobalNotebookOpen(false)}
-          promptTitle="Smartboard-to-Notebook Practice Time"
-          promptTask="Eyes on your exercise book! Write down what we just sparked on the Smartboard using your neatest handwriting and complete sentences."
-          checklist={[
-            'Capital letter at the start of every sentence',
-            'Complete sentence (no 1-word fragments!)',
-            'Checked spelling of key words on the board',
-            'Full stop, question mark, or exclamation mark at the end'
-          ]}
-        />
-      </LayoutShell>
-    </Router>
+          <NotebookBridgeModal
+            isOpen={globalNotebookOpen}
+            onClose={() => setGlobalNotebookOpen(false)}
+            promptTitle="Smartboard-to-Notebook Practice Time"
+            promptTask="Eyes on your exercise book! Write down what we just sparked on the Smartboard using your neatest handwriting and complete sentences."
+            checklist={[
+              'Capital letter at the start of every sentence',
+              'Complete sentence (no 1-word fragments!)',
+              'Checked spelling of key words on the board',
+              'Full stop, question mark, or exclamation mark at the end'
+            ]}
+          />
+        </LayoutShell>
+      </Router>
+    </ThemeProvider>
   );
 }
 

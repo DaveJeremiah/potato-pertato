@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import { EXAM_PAPERS } from '../data/examRevisionData';
 import NotebookBridgeModal from '../components/NotebookBridgeModal';
 import {
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react';
 
 export default function ExamRevisionStudio() {
+  const { isDark } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPaper = searchParams.get('paper') === 'fiction' ? 'fiction' : 'nonfiction';
 
@@ -94,10 +96,10 @@ export default function ExamRevisionStudio() {
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: '0.45rem',
-          backgroundColor: '#FFFFFF',
-          border: '2px solid #1E1E24',
+          backgroundColor: 'var(--surface)',
+          border: '2px solid var(--border-ink)',
           borderRadius: '16px',
-          boxShadow: '3px 3px 0px #1E1E24',
+          boxShadow: '3px 3px 0px var(--shadow-ink)',
           padding: '0.4rem 0.8rem',
           flexShrink: 0
         }}
@@ -109,11 +111,12 @@ export default function ExamRevisionStudio() {
             style={{
               padding: '0.3rem 0.75rem',
               borderRadius: '999px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.84rem',
-              backgroundColor: activePaperId === 'nonfiction' ? '#F5C0A1' : '#FFFFFF',
-              boxShadow: activePaperId === 'nonfiction' ? '2px 2px 0px #1E1E24' : 'none',
+              backgroundColor: activePaperId === 'nonfiction' ? 'var(--card-orange)' : 'var(--surface)',
+              color: 'var(--text-primary)',
+              boxShadow: activePaperId === 'nonfiction' ? '2px 2px 0px var(--shadow-ink)' : 'none',
               cursor: 'pointer'
             }}
           >
@@ -124,11 +127,12 @@ export default function ExamRevisionStudio() {
             style={{
               padding: '0.3rem 0.75rem',
               borderRadius: '999px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.84rem',
-              backgroundColor: activePaperId === 'fiction' ? '#F1DFFE' : '#FFFFFF',
-              boxShadow: activePaperId === 'fiction' ? '2px 2px 0px #1E1E24' : 'none',
+              backgroundColor: activePaperId === 'fiction' ? 'var(--card-purple)' : 'var(--surface)',
+              color: 'var(--text-primary)',
+              boxShadow: activePaperId === 'fiction' ? '2px 2px 0px var(--shadow-ink)' : 'none',
               cursor: 'pointer'
             }}
           >
@@ -143,11 +147,11 @@ export default function ExamRevisionStudio() {
             style={{
               padding: '0.3rem 0.75rem',
               borderRadius: '10px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.84rem',
-              backgroundColor: activeStation === 'comprehension' ? '#1E1E24' : '#FFFFFF',
-              color: activeStation === 'comprehension' ? '#FFFFFF' : '#1E1E24',
+              backgroundColor: activeStation === 'comprehension' ? 'var(--ink)' : 'var(--surface)',
+              color: activeStation === 'comprehension' ? 'var(--bg-paper)' : 'var(--text-primary)',
               cursor: 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
@@ -162,11 +166,11 @@ export default function ExamRevisionStudio() {
             style={{
               padding: '0.3rem 0.75rem',
               borderRadius: '10px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.84rem',
-              backgroundColor: activeStation === 'vocabGrammar' ? '#1E1E24' : '#FFFFFF',
-              color: activeStation === 'vocabGrammar' ? '#FFFFFF' : '#1E1E24',
+              backgroundColor: activeStation === 'vocabGrammar' ? 'var(--ink)' : 'var(--surface)',
+              color: activeStation === 'vocabGrammar' ? 'var(--bg-paper)' : 'var(--text-primary)',
               cursor: 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
@@ -181,11 +185,11 @@ export default function ExamRevisionStudio() {
             style={{
               padding: '0.3rem 0.75rem',
               borderRadius: '10px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.84rem',
-              backgroundColor: activeStation === 'fullPassage' ? '#1E1E24' : '#FFFFFF',
-              color: activeStation === 'fullPassage' ? '#FFFFFF' : '#1E1E24',
+              backgroundColor: activeStation === 'fullPassage' ? 'var(--ink)' : 'var(--surface)',
+              color: activeStation === 'fullPassage' ? 'var(--bg-paper)' : 'var(--text-primary)',
               cursor: 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
@@ -200,11 +204,11 @@ export default function ExamRevisionStudio() {
             style={{
               padding: '0.3rem 0.75rem',
               borderRadius: '10px',
-              border: '2px solid #1E1E24',
+              border: '2px solid var(--border-ink)',
               fontWeight: 800,
               fontSize: '0.84rem',
-              backgroundColor: '#FCE3A1',
-              color: '#1E1E24',
+              backgroundColor: 'var(--card-yellow)',
+              color: 'var(--text-primary)',
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
@@ -241,19 +245,19 @@ export default function ExamRevisionStudio() {
                     minWidth: '44px',
                     padding: '0.25rem 0.6rem',
                     borderRadius: '8px',
-                    border: '2px solid #1E1E24',
+                    border: '2px solid var(--border-ink)',
                     fontWeight: 900,
                     fontSize: '0.85rem',
-                    backgroundColor: compIndex === idx ? '#2329D6' : '#FFFFFF',
-                    color: compIndex === idx ? '#FFFFFF' : '#1E1E24',
-                    boxShadow: compIndex === idx ? '2px 2px 0px #1E1E24' : 'none',
+                    backgroundColor: compIndex === idx ? 'var(--cobalt)' : 'var(--surface)',
+                    color: compIndex === idx ? '#FFFFFF' : 'var(--text-primary)',
+                    boxShadow: compIndex === idx ? '2px 2px 0px var(--shadow-ink)' : 'none',
                     cursor: 'pointer'
                   }}
                 >
                   {q.number}
                 </button>
               ))}
-              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#4B5563', marginLeft: '0.3rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-secondary)', marginLeft: '0.3rem' }}>
                 ({currentComp.marks})
               </span>
             </div>
@@ -296,7 +300,7 @@ export default function ExamRevisionStudio() {
             <div
               className="retro-window"
               style={{
-                backgroundColor: activePaperId === 'nonfiction' ? '#F5C0A1' : '#F1DFFE',
+                backgroundColor: activePaperId === 'nonfiction' ? 'var(--card-orange)' : 'var(--card-purple)',
                 padding: '0.9rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -315,11 +319,11 @@ export default function ExamRevisionStudio() {
                 <div
                   className="study-scrollable"
                   style={{
-                    backgroundColor: '#FFFFFF',
-                    border: '2px solid #1E1E24',
+                    backgroundColor: 'var(--surface)',
+                    border: '2px solid var(--border-ink)',
                     borderRadius: '12px',
                     padding: '0.75rem',
-                    boxShadow: '3px 3px 0px #1E1E24',
+                    boxShadow: '3px 3px 0px var(--shadow-ink)',
                     maxHeight: 'calc(100vh - 280px)',
                     overflowY: 'auto'
                   }}
@@ -333,18 +337,18 @@ export default function ExamRevisionStudio() {
                           padding: '0.45rem 0.6rem',
                           marginBottom: '0.35rem',
                           borderRadius: '8px',
-                          backgroundColor: spotlightOn ? '#FEF3C7' : '#F8FAFC',
-                          border: spotlightOn ? '2px solid #D97706' : '1px solid #E2E8F0',
+                          backgroundColor: spotlightOn ? (isDark ? '#3D2D0C' : '#FEF3C7') : isDark ? '#151928' : '#F8FAFC',
+                          border: spotlightOn ? `2px solid ${isDark ? '#FBBF24' : '#D97706'}` : `1px solid ${isDark ? '#262D40' : '#E2E8F0'}`,
                           fontSize: '1rem',
                           lineHeight: 1.45,
                           fontWeight: 600,
-                          color: '#1E1E24'
+                          color: 'var(--text-primary)'
                         }}
                       >
                         <span
                           style={{
                             display: 'inline-block',
-                            backgroundColor: '#1E1E24',
+                            backgroundColor: 'var(--border-ink)',
                             color: '#FFFFFF',
                             fontSize: '0.72rem',
                             fontWeight: 800,
@@ -367,7 +371,7 @@ export default function ExamRevisionStudio() {
                   onClick={() => setSpotlightOn(!spotlightOn)}
                   className="retro-btn-primary"
                   style={{
-                    backgroundColor: spotlightOn ? '#D97706' : '#1E1E24',
+                    backgroundColor: spotlightOn ? '#D97706' : 'var(--border-ink)',
                     width: '100%',
                     justifyContent: 'center',
                     padding: '0.45rem 0.8rem',
@@ -382,18 +386,19 @@ export default function ExamRevisionStudio() {
                   <div
                     style={{
                       marginTop: '0.4rem',
-                      backgroundColor: '#FFFBEB',
-                      border: '2px solid #1E1E24',
+                      backgroundColor: isDark ? '#2C2005' : '#FFFBEB',
+                      border: '2px solid var(--border-ink)',
                       borderRadius: '10px',
                       padding: '0.6rem 0.8rem',
-                      boxShadow: '2px 2px 0px #1E1E24',
-                      fontSize: '0.85rem'
+                      boxShadow: '2px 2px 0px var(--shadow-ink)',
+                      fontSize: '0.85rem',
+                      color: 'var(--text-primary)'
                     }}
                   >
-                    <div style={{ fontWeight: 800, color: '#B45309', marginBottom: '0.2rem' }}>
+                    <div style={{ fontWeight: 800, color: isDark ? '#FBBF24' : '#B45309', marginBottom: '0.2rem' }}>
                       💡 Evidence: &ldquo;{currentComp.cluePhrase}&rdquo;
                     </div>
-                    <div style={{ fontWeight: 600, color: '#1E1E24' }}>{currentComp.supportTip}</div>
+                    <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{currentComp.supportTip}</div>
                   </div>
                 )}
               </div>
@@ -403,7 +408,7 @@ export default function ExamRevisionStudio() {
             <div
               className="retro-window"
               style={{
-                backgroundColor: '#FFFFFF',
+                backgroundColor: 'var(--surface)',
                 padding: '0.9rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -417,7 +422,7 @@ export default function ExamRevisionStudio() {
                   <span className="retro-pill-dark" style={{ fontSize: '0.72rem', padding: '0.2rem 0.55rem' }}>
                     {currentComp.number} • {currentComp.marks}
                   </span>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#15803D' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, color: isDark ? '#4ADE80' : '#15803D' }}>
                     P.Q.A. STEM RULE
                   </span>
                 </div>
@@ -426,7 +431,7 @@ export default function ExamRevisionStudio() {
                   style={{
                     fontSize: '1.22rem',
                     fontWeight: 900,
-                    color: '#1E1E24',
+                    color: 'var(--text-primary)',
                     lineHeight: 1.25,
                     marginBottom: '0.65rem'
                   }}
@@ -438,8 +443,8 @@ export default function ExamRevisionStudio() {
                 <div
                   style={{
                     minHeight: '68px',
-                    backgroundColor: isPqaComplete ? '#ECFDF5' : '#FAF7F0',
-                    border: isPqaComplete ? '2.5px solid #16A34A' : '2px dashed #1E1E24',
+                    backgroundColor: isPqaComplete ? (isDark ? '#0C2314' : '#ECFDF5') : (isDark ? '#121520' : '#FAF7F0'),
+                    border: isPqaComplete ? '2.5px solid #16A34A' : '2px dashed var(--border-ink)',
                     borderRadius: '12px',
                     padding: '0.55rem 0.75rem',
                     display: 'flex',
@@ -450,7 +455,7 @@ export default function ExamRevisionStudio() {
                   }}
                 >
                   {selectedChunks.length === 0 && (
-                    <span style={{ color: '#6B7280', fontWeight: 600, fontSize: '0.92rem' }}>
+                    <span style={{ color: 'var(--text-secondary)', fontWeight: 600, fontSize: '0.92rem' }}>
                       👆 Tap the Sentence Stem first to build your answer...
                     </span>
                   )}
@@ -459,14 +464,14 @@ export default function ExamRevisionStudio() {
                     <div
                       key={chunk.id}
                       style={{
-                        backgroundColor: i === 0 ? '#92C5E3' : i === 1 ? '#FCE3A1' : '#C7E0CD',
-                        border: '2px solid #1E1E24',
-                        boxShadow: '2px 2px 0px #1E1E24',
+                        backgroundColor: i === 0 ? 'var(--card-blue)' : i === 1 ? 'var(--card-yellow)' : 'var(--card-green)',
+                        border: '2px solid var(--border-ink)',
+                        boxShadow: '2px 2px 0px var(--shadow-ink)',
                         padding: '0.35rem 0.65rem',
                         borderRadius: '9px',
                         fontWeight: 800,
                         fontSize: '0.95rem',
-                        color: '#1E1E24'
+                        color: 'var(--text-primary)'
                       }}
                     >
                       <span style={{ fontSize: '0.6rem', display: 'block', textTransform: 'uppercase', opacity: 0.75 }}>
@@ -479,7 +484,7 @@ export default function ExamRevisionStudio() {
 
                 {/* Chunk Bank */}
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.78rem', color: '#4B5563', marginBottom: '0.35rem' }}>
+                  <div style={{ fontWeight: 800, fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '0.35rem' }}>
                     📦 SMARTBOARD CHUNK BANK:
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
@@ -493,20 +498,21 @@ export default function ExamRevisionStudio() {
                           key={chunk.id}
                           onClick={() => handleChunkTap(chunk)}
                           style={{
-                            backgroundColor: isWrong ? '#FEE2E2' : '#FFFFFF',
-                            borderColor: isWrong ? '#DC2626' : '#1E1E24',
+                            backgroundColor: isWrong ? (isDark ? '#3E1010' : '#FEE2E2') : 'var(--surface-alt)',
+                            borderColor: isWrong ? '#EF4444' : 'var(--border-ink)',
                             border: '2px solid',
-                            boxShadow: '3px 3px 0px #1E1E24',
+                            boxShadow: '3px 3px 0px var(--shadow-ink)',
                             borderRadius: '10px',
                             fontSize: '0.95rem',
                             fontWeight: 800,
                             padding: '0.45rem 0.8rem',
+                            color: 'var(--text-primary)',
                             cursor: 'pointer'
                           }}
                         >
                           {chunk.text}
                           {isWrong && (
-                            <span style={{ color: '#DC2626', fontWeight: 900, marginLeft: '0.3rem', fontSize: '0.75rem' }}>
+                            <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '0.3rem', fontSize: '0.75rem' }}>
                               {chunk.isDistractor ? '❌ Fragment!' : '⏳ Order'}
                             </span>
                           )}
@@ -521,18 +527,18 @@ export default function ExamRevisionStudio() {
                   <div
                     style={{
                       marginTop: '0.55rem',
-                      backgroundColor: '#C7E0CD',
-                      border: '2px solid #1E1E24',
+                      backgroundColor: isDark ? '#0C2314' : '#C7E0CD',
+                      border: '2px solid var(--border-ink)',
                       borderRadius: '10px',
                       padding: '0.6rem 0.8rem',
-                      boxShadow: '2px 2px 0px #1E1E24'
+                      boxShadow: '2px 2px 0px var(--shadow-ink)'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 900, fontSize: '0.85rem' }}>
-                      <CheckCircle2 size={16} color="#15803D" />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 900, fontSize: '0.85rem', color: isDark ? '#4ADE80' : '#15803D' }}>
+                      <CheckCircle2 size={16} color={isDark ? '#4ADE80' : '#15803D'} />
                       FULL P.Q.A. ANSWER:
                     </div>
-                    <p style={{ fontSize: '1rem', fontWeight: 800, color: '#1E1E24', marginTop: '0.2rem' }}>
+                    <p style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '0.2rem' }}>
                       {currentComp.modelAnswer}
                     </p>
                   </div>
@@ -552,7 +558,7 @@ export default function ExamRevisionStudio() {
                 <button
                   onClick={() => setShowModelAnswer(!showModelAnswer)}
                   className="retro-btn-outline"
-                  style={{ padding: '0.35rem 0.75rem', fontSize: '0.82rem', backgroundColor: '#F1DFFE' }}
+                  style={{ padding: '0.35rem 0.75rem', fontSize: '0.82rem', backgroundColor: 'var(--card-purple)' }}
                 >
                   <Eye size={14} /> {showModelAnswer ? 'Hide' : 'Reveal Model Answer'}
                 </button>
@@ -596,12 +602,12 @@ export default function ExamRevisionStudio() {
                 style={{
                   padding: '0.25rem 0.65rem',
                   borderRadius: '8px',
-                  border: '2px solid #1E1E24',
+                  border: '2px solid var(--border-ink)',
                   fontWeight: 800,
                   fontSize: '0.82rem',
-                  backgroundColor: vgIndex === idx ? '#2329D6' : '#FFFFFF',
-                  color: vgIndex === idx ? '#FFFFFF' : '#1E1E24',
-                  boxShadow: vgIndex === idx ? '2px 2px 0px #1E1E24' : 'none',
+                  backgroundColor: vgIndex === idx ? 'var(--cobalt)' : 'var(--surface)',
+                  color: vgIndex === idx ? '#FFFFFF' : 'var(--text-primary)',
+                  boxShadow: vgIndex === idx ? '2px 2px 0px var(--shadow-ink)' : 'none',
                   cursor: 'pointer'
                 }}
               >
@@ -623,7 +629,7 @@ export default function ExamRevisionStudio() {
             <div
               className="retro-window"
               style={{
-                backgroundColor: '#FCE3A1',
+                backgroundColor: 'var(--card-yellow)',
                 padding: '0.9rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -638,15 +644,16 @@ export default function ExamRevisionStudio() {
 
                 <div
                   style={{
-                    backgroundColor: '#FFFFFF',
-                    border: '2px solid #1E1E24',
+                    backgroundColor: 'var(--surface)',
+                    border: '2px solid var(--border-ink)',
                     borderRadius: '12px',
                     padding: '0.85rem',
                     fontSize: '1.1rem',
                     fontWeight: 800,
                     lineHeight: 1.45,
-                    boxShadow: '3px 3px 0px #1E1E24',
+                    boxShadow: '3px 3px 0px var(--shadow-ink)',
                     margin: '0.65rem 0',
+                    color: 'var(--text-primary)',
                     whiteSpace: 'pre-line'
                   }}
                 >
@@ -655,7 +662,7 @@ export default function ExamRevisionStudio() {
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 800 }}>
                   <span>Target Word:</span>
-                  <span style={{ backgroundColor: '#1E1E24', color: '#FCE3A1', padding: '0.15rem 0.55rem', borderRadius: '6px' }}>
+                  <span style={{ backgroundColor: 'var(--border-ink)', color: '#FCE3A1', padding: '0.15rem 0.55rem', borderRadius: '6px' }}>
                     {currentVg.highlightWord}
                   </span>
                 </div>
@@ -665,7 +672,7 @@ export default function ExamRevisionStudio() {
                 <button
                   onClick={() => setVgHintOn(!vgHintOn)}
                   className="retro-btn-primary"
-                  style={{ width: '100%', justifyContent: 'center', backgroundColor: '#1E1E24', padding: '0.45rem', fontSize: '0.85rem' }}
+                  style={{ width: '100%', justifyContent: 'center', backgroundColor: 'var(--border-ink)', padding: '0.45rem', fontSize: '0.85rem' }}
                 >
                   <HelpCircle size={15} /> {vgHintOn ? 'Hide Clue' : '💡 Show Detective Clue'}
                 </button>
@@ -673,12 +680,13 @@ export default function ExamRevisionStudio() {
                   <div
                     style={{
                       marginTop: '0.35rem',
-                      backgroundColor: '#FFFFFF',
-                      border: '2px solid #1E1E24',
+                      backgroundColor: 'var(--surface)',
+                      border: '2px solid var(--border-ink)',
                       borderRadius: '8px',
                       padding: '0.5rem',
                       fontSize: '0.85rem',
-                      fontWeight: 700
+                      fontWeight: 700,
+                      color: 'var(--text-primary)'
                     }}
                   >
                     💡 {currentVg.hint}
@@ -691,7 +699,7 @@ export default function ExamRevisionStudio() {
             <div
               className="retro-window"
               style={{
-                backgroundColor: '#FFFFFF',
+                backgroundColor: 'var(--surface)',
                 padding: '0.9rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -700,18 +708,18 @@ export default function ExamRevisionStudio() {
               }}
             >
               <div>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 900, marginBottom: '0.65rem', color: '#1E1E24' }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 900, marginBottom: '0.65rem', color: 'var(--text-primary)' }}>
                   {currentVg.question}
                 </h3>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
                   {currentVg.options.map((opt, idx) => {
                     const isPicked = selectedOptionIdx === idx;
-                    let bg = '#FAF7F0';
-                    let borderCol = '#1E1E24';
+                    let bg = 'var(--surface-alt)';
+                    let borderCol = 'var(--border-ink)';
                     if (isPicked) {
-                      bg = opt.isCorrect ? '#C7E0CD' : '#FEE2E2';
-                      borderCol = opt.isCorrect ? '#15803D' : '#DC2626';
+                      bg = opt.isCorrect ? (isDark ? '#0C2314' : '#C7E0CD') : (isDark ? '#330F0F' : '#FEE2E2');
+                      borderCol = opt.isCorrect ? '#22C55E' : '#EF4444';
                     }
 
                     return (
@@ -723,16 +731,16 @@ export default function ExamRevisionStudio() {
                           border: `2px solid ${borderCol}`,
                           borderRadius: '12px',
                           padding: '0.65rem 0.85rem',
-                          boxShadow: '2px 2px 0px #1E1E24',
+                          boxShadow: '2px 2px 0px var(--shadow-ink)',
                           cursor: 'pointer'
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '1rem', fontWeight: 800, color: '#1E1E24' }}>{opt.text}</span>
-                          {isPicked && (opt.isCorrect ? <CheckCircle2 size={18} color="#15803D" /> : <XCircle size={18} color="#DC2626" />)}
+                          <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{opt.text}</span>
+                          {isPicked && (opt.isCorrect ? <CheckCircle2 size={18} color="#22C55E" /> : <XCircle size={18} color="#EF4444" />)}
                         </div>
                         {isPicked && (
-                          <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', fontWeight: 700, color: opt.isCorrect ? '#14532D' : '#7F1D1D' }}>
+                          <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', fontWeight: 700, color: opt.isCorrect ? '#22C55E' : '#EF4444' }}>
                             {opt.feedback}
                           </div>
                         )}
@@ -772,7 +780,7 @@ export default function ExamRevisionStudio() {
         <div
           className="retro-window study-scrollable"
           style={{
-            backgroundColor: '#FFFFFF',
+            backgroundColor: 'var(--surface)',
             padding: '1rem',
             flex: 1,
             minHeight: 0,
@@ -780,17 +788,17 @@ export default function ExamRevisionStudio() {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 900 }}>{paper.subtitle}</h3>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 900, color: 'var(--text-primary)' }}>{paper.subtitle}</h3>
             <button onClick={() => setActiveStation('comprehension')} className="retro-btn-primary" style={{ padding: '0.3rem 0.75rem', fontSize: '0.82rem' }}>
               Back to Questions
             </button>
           </div>
 
-          <div style={{ backgroundColor: '#FAF7F0', border: '2px solid #1E1E24', borderRadius: '12px', padding: '0.85rem' }}>
+          <div style={{ backgroundColor: 'var(--surface-alt)', border: '2px solid var(--border-ink)', borderRadius: '12px', padding: '0.85rem' }}>
             {paper.passageLines.map((l) => (
-              <div key={l.line} style={{ padding: '0.25rem 0', borderBottom: '1px dashed #D1D5DB', fontSize: '0.98rem', display: 'flex', gap: '0.6rem' }}>
-                <span style={{ minWidth: '60px', fontWeight: 800, color: '#2329D6' }}>L{l.line}:</span>
-                <span style={{ fontWeight: 600 }}>{l.text}</span>
+              <div key={l.line} style={{ padding: '0.25rem 0', borderBottom: '1px dashed var(--border-ink)', fontSize: '0.98rem', display: 'flex', gap: '0.6rem' }}>
+                <span style={{ minWidth: '60px', fontWeight: 800, color: '#3B82F6' }}>L{l.line}:</span>
+                <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{l.text}</span>
               </div>
             ))}
           </div>

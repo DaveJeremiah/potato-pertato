@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PUNCTUATION_SURGERY_ITEMS } from '../data/examRevisionData';
 import NotebookBridgeModal from '../components/NotebookBridgeModal';
+import { useTheme } from '../context/ThemeContext';
 import {
   Wrench,
   CheckCircle2,
@@ -14,6 +15,7 @@ import {
 } from 'lucide-react';
 
 export default function PunctuationClinic() {
+  const { isDark } = useTheme();
   const [searchParams] = useSearchParams();
   const initialPaperFilter = searchParams.get('paper') === 'fiction' ? 'Paper 2 (Fiction)' : 'All';
 
@@ -75,10 +77,10 @@ export default function PunctuationClinic() {
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: '0.45rem',
-          backgroundColor: '#FFFFFF',
-          border: '2px solid #1E1E24',
+          backgroundColor: 'var(--surface)',
+          border: '2px solid var(--border-ink)',
           borderRadius: '16px',
-          boxShadow: '3px 3px 0px #1E1E24',
+          boxShadow: '3px 3px 0px var(--shadow-ink)',
           padding: '0.4rem 0.8rem',
           flexShrink: 0
         }}
@@ -95,11 +97,22 @@ export default function PunctuationClinic() {
               style={{
                 padding: '0.25rem 0.65rem',
                 borderRadius: '999px',
-                border: '2px solid #1E1E24',
+                border: '2px solid var(--border-ink)',
                 fontWeight: 800,
                 fontSize: '0.82rem',
-                backgroundColor: paperFilter === filterName ? '#FCE3A1' : '#FFFFFF',
-                boxShadow: paperFilter === filterName ? '2px 2px 0px #1E1E24' : 'none',
+                backgroundColor:
+                  paperFilter === filterName
+                    ? isDark
+                      ? '#423108'
+                      : '#FCE3A1'
+                    : 'var(--surface)',
+                color:
+                  paperFilter === filterName
+                    ? isDark
+                      ? '#FBBF24'
+                      : '#1E1E24'
+                    : 'var(--text-primary)',
+                boxShadow: paperFilter === filterName ? '2px 2px 0px var(--shadow-ink)' : 'none',
                 cursor: 'pointer'
               }}
             >
@@ -117,12 +130,12 @@ export default function PunctuationClinic() {
               style={{
                 padding: '0.2rem 0.55rem',
                 borderRadius: '7px',
-                border: '2px solid #1E1E24',
+                border: '2px solid var(--border-ink)',
                 fontWeight: 900,
                 fontSize: '0.82rem',
-                backgroundColor: currentIndex === idx ? '#2329D6' : '#FFFFFF',
-                color: currentIndex === idx ? '#FFFFFF' : '#1E1E24',
-                boxShadow: currentIndex === idx ? '2px 2px 0px #1E1E24' : 'none',
+                backgroundColor: currentIndex === idx ? 'var(--cobalt)' : 'var(--surface)',
+                color: currentIndex === idx ? '#FFFFFF' : 'var(--text-primary)',
+                boxShadow: currentIndex === idx ? '2px 2px 0px var(--shadow-ink)' : 'none',
                 cursor: 'pointer'
               }}
             >
@@ -166,7 +179,10 @@ export default function PunctuationClinic() {
           <div
             className="retro-window"
             style={{
-              backgroundColor: '#FFFFFF',
+              backgroundColor: 'var(--surface)',
+              border: '2.5px solid var(--border-ink)',
+              borderRadius: '20px',
+              boxShadow: '4px 4px 0px var(--shadow-ink)',
               padding: '1rem',
               display: 'flex',
               flexDirection: 'column',
@@ -183,8 +199,21 @@ export default function PunctuationClinic() {
 
                 <span
                   style={{
-                    backgroundColor: isAllFixed ? '#C7E0CD' : '#FCE3A1',
-                    border: '2px solid #1E1E24',
+                    backgroundColor: isAllFixed
+                      ? isDark
+                        ? '#0C2314'
+                        : '#C7E0CD'
+                      : isDark
+                      ? '#271C04'
+                      : '#FCE3A1',
+                    color: isAllFixed
+                      ? isDark
+                        ? '#4ADE80'
+                        : '#15803D'
+                      : isDark
+                      ? '#FBBF24'
+                      : '#B45309',
+                    border: '2px solid var(--border-ink)',
                     padding: '0.2rem 0.65rem',
                     borderRadius: '999px',
                     fontWeight: 900,
@@ -198,33 +227,37 @@ export default function PunctuationClinic() {
               {/* Raw sentence bar */}
               <div
                 style={{
-                  backgroundColor: '#FAF7F0',
-                  border: '1.5px dashed #1E1E24',
+                  backgroundColor: 'var(--surface-alt)',
+                  border: '1.5px dashed var(--border-ink)',
                   borderRadius: '10px',
                   padding: '0.5rem 0.75rem',
                   marginBottom: '0.65rem'
                 }}
               >
-                <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#6B7280', textTransform: 'uppercase', marginRight: '0.4rem' }}>
+                <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-secondary)', textTransform: 'uppercase', marginRight: '0.4rem' }}>
                   Exam Line:
                 </span>
-                <span style={{ fontSize: '1.1rem', fontWeight: 700, color: '#4B5563', fontFamily: 'monospace' }}>
+                <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'monospace' }}>
                   {currentItem.rawSentence}
                 </span>
               </div>
 
-              <div style={{ fontWeight: 800, fontSize: '0.85rem', color: '#1E1E24', marginBottom: '0.5rem' }}>
+              <div style={{ fontWeight: 800, fontSize: '0.85rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
                 👆 TAP THE WORDS BELOW THAT NEED CAPITAL LETTERS, SPEECH MARKS, COMMAS, OR END MARKS:
               </div>
 
               {/* Smartboard Interactive Word Tiles */}
               <div
                 style={{
-                  backgroundColor: isAllFixed ? '#ECFDF5' : '#F8FAFC',
-                  border: '2.5px solid #1E1E24',
+                  backgroundColor: isAllFixed
+                    ? isDark
+                      ? '#0C2314'
+                      : '#ECFDF5'
+                    : 'var(--surface-alt)',
+                  border: '2.5px solid var(--border-ink)',
                   borderRadius: '16px',
                   padding: '1.1rem',
-                  boxShadow: '4px 4px 0px #1E1E24',
+                  boxShadow: '4px 4px 0px var(--shadow-ink)',
                   display: 'flex',
                   flexWrap: 'wrap',
                   gap: '0.65rem',
@@ -241,14 +274,30 @@ export default function PunctuationClinic() {
                       key={token.id}
                       onClick={() => handleTokenTap(token)}
                       style={{
-                        backgroundColor: isFixed ? '#C7E0CD' : isShaking ? '#FEE2E2' : '#FFFFFF',
-                        border: '2.5px solid #1E1E24',
-                        boxShadow: isFixed ? '3px 3px 0px #15803D' : '3px 3px 0px #1E1E24',
+                        backgroundColor: isFixed
+                          ? isDark
+                            ? '#163B23'
+                            : '#C7E0CD'
+                          : isShaking
+                          ? isDark
+                            ? '#450A0A'
+                            : '#FEE2E2'
+                          : 'var(--surface)',
+                        border: '2.5px solid var(--border-ink)',
+                        boxShadow: isFixed
+                          ? isDark
+                            ? '3px 3px 0px #22C55E'
+                            : '3px 3px 0px #15803D'
+                          : '3px 3px 0px var(--shadow-ink)',
                         borderRadius: '12px',
                         padding: '0.55rem 0.95rem',
                         fontSize: '1.3rem',
                         fontWeight: 900,
-                        color: '#1E1E24',
+                        color: isFixed
+                          ? isDark
+                            ? '#86EFAC'
+                            : '#14532D'
+                          : 'var(--text-primary)',
                         cursor: 'pointer',
                         transition: 'all 0.15s ease',
                         transform: isShaking ? 'translateX(-4px)' : isFixed ? 'translateY(-2px)' : 'none'
@@ -261,7 +310,7 @@ export default function PunctuationClinic() {
                             display: 'block',
                             fontSize: '0.65rem',
                             fontWeight: 800,
-                            color: '#14532D',
+                            color: isDark ? '#4ADE80' : '#14532D',
                             marginTop: '0.1rem'
                           }}
                         >
@@ -277,36 +326,45 @@ export default function PunctuationClinic() {
               {isAllFixed ? (
                 <div
                   style={{
-                    backgroundColor: '#FCE3A1',
-                    border: '2px solid #1E1E24',
+                    backgroundColor: isDark ? '#271C04' : '#FCE3A1',
+                    border: '2px solid var(--border-ink)',
                     borderRadius: '12px',
                     padding: '0.75rem',
-                    boxShadow: '3px 3px 0px #1E1E24',
-                    marginBottom: '0.5rem'
+                    boxShadow: '3px 3px 0px var(--shadow-ink)',
+                    marginBottom: '0.5rem',
+                    color: isDark ? '#FBBF24' : '#1E1E24'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 900, fontSize: '0.85rem' }}>
-                    <CheckCircle2 size={18} color="#15803D" />
+                    <CheckCircle2 size={18} color={isDark ? '#4ADE80' : '#15803D'} />
                     SURGERY COMPLETE! PERFECT REWRITE:
                   </div>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#1E1E24', marginTop: '0.2rem' }}>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-primary)', marginTop: '0.2rem' }}>
                     {currentItem.correctSentence}
                   </div>
                 </div>
               ) : lastFeedback ? (
                 <div
                   style={{
-                    backgroundColor: lastFeedback.type === 'success' ? '#C7E0CD' : '#F1DFFE',
-                    border: '2px solid #1E1E24',
+                    backgroundColor:
+                      lastFeedback.type === 'success'
+                        ? isDark
+                          ? '#0C2314'
+                          : '#C7E0CD'
+                        : isDark
+                        ? '#221133'
+                        : '#F1DFFE',
+                    border: '2px solid var(--border-ink)',
                     borderRadius: '10px',
                     padding: '0.65rem 0.85rem',
-                    boxShadow: '2px 2px 0px #1E1E24',
+                    boxShadow: '2px 2px 0px var(--shadow-ink)',
                     marginBottom: '0.5rem',
-                    fontSize: '0.9rem'
+                    fontSize: '0.9rem',
+                    color: 'var(--text-primary)'
                   }}
                 >
                   <div style={{ fontWeight: 900 }}>{lastFeedback.title}</div>
-                  <div style={{ fontWeight: 600 }}>{lastFeedback.detail}</div>
+                  <div style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>{lastFeedback.detail}</div>
                 </div>
               ) : null}
             </div>
@@ -328,7 +386,11 @@ export default function PunctuationClinic() {
               <button
                 onClick={() => setRevealAll(!revealAll)}
                 className="retro-btn-outline"
-                style={{ padding: '0.35rem 0.75rem', fontSize: '0.82rem', backgroundColor: '#F1DFFE' }}
+                style={{
+                  padding: '0.35rem 0.75rem',
+                  fontSize: '0.82rem',
+                  backgroundColor: isDark ? '#261338' : '#F1DFFE'
+                }}
               >
                 <Eye size={14} /> {revealAll ? 'Hide Answer' : 'Reveal All Fixes'}
               </button>
@@ -336,7 +398,15 @@ export default function PunctuationClinic() {
               <button
                 onClick={() => setShowClues(!showClues)}
                 className="retro-btn-outline"
-                style={{ padding: '0.35rem 0.75rem', fontSize: '0.82rem', backgroundColor: showClues ? '#FCE3A1' : '#FFFFFF' }}
+                style={{
+                  padding: '0.35rem 0.75rem',
+                  fontSize: '0.82rem',
+                  backgroundColor: showClues
+                    ? isDark
+                      ? '#2B1E05'
+                      : '#FCE3A1'
+                    : 'var(--surface)'
+                }}
               >
                 <Lightbulb size={14} /> {showClues ? 'Hide Checklist' : `💡 Show ${currentItem.targetCount} Marks Checklist`}
               </button>
@@ -350,7 +420,7 @@ export default function PunctuationClinic() {
                   })
                 }
                 className="retro-btn-primary"
-                style={{ padding: '0.35rem 0.85rem', fontSize: '0.82rem', backgroundColor: '#2329D6', marginLeft: 'auto' }}
+                style={{ padding: '0.35rem 0.85rem', fontSize: '0.82rem', backgroundColor: 'var(--cobalt)', marginLeft: 'auto' }}
               >
                 <Pencil size={14} /> ✏️ Write in Notebook (60s)
               </button>
@@ -362,7 +432,10 @@ export default function PunctuationClinic() {
             <div
               className="retro-window study-scrollable"
               style={{
-                backgroundColor: '#FAF7F0',
+                backgroundColor: 'var(--surface-alt)',
+                border: '2.5px solid var(--border-ink)',
+                borderRadius: '20px',
+                boxShadow: '4px 4px 0px var(--shadow-ink)',
                 padding: '0.9rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -371,7 +444,7 @@ export default function PunctuationClinic() {
                 overflowY: 'auto'
               }}
             >
-              <div style={{ fontWeight: 900, color: '#B45309', fontSize: '0.92rem' }}>
+              <div style={{ fontWeight: 900, color: isDark ? '#FBBF24' : '#B45309', fontSize: '0.92rem' }}>
                 🔍 Hunt for these {currentItem.targetCount} things:
               </div>
 
@@ -380,12 +453,13 @@ export default function PunctuationClinic() {
                   <div
                     key={i}
                     style={{
-                      backgroundColor: '#FFFFFF',
-                      border: '1.5px solid #1E1E24',
+                      backgroundColor: 'var(--surface)',
+                      border: '1.5px solid var(--border-ink)',
                       borderRadius: '8px',
                       padding: '0.5rem 0.7rem',
                       fontWeight: 700,
-                      fontSize: '0.86rem'
+                      fontSize: '0.86rem',
+                      color: 'var(--text-primary)'
                     }}
                   >
                     {clue}
@@ -395,16 +469,17 @@ export default function PunctuationClinic() {
 
               <div
                 style={{
-                  backgroundColor: '#FFFFFF',
-                  border: '1.5px solid #1E1E24',
+                  backgroundColor: 'var(--surface)',
+                  border: '1.5px solid var(--border-ink)',
                   borderRadius: '10px',
                   padding: '0.75rem',
                   fontSize: '0.82rem',
                   fontWeight: 600,
-                  marginTop: 'auto'
+                  marginTop: 'auto',
+                  color: 'var(--text-secondary)'
                 }}
               >
-                <strong>📌 Reminder:</strong> Speech marks need opening quotes ("), capital letter for speech, and end punctuation (., ?) inside the closing quotes (")!
+                <strong style={{ color: 'var(--text-primary)' }}>📌 Reminder:</strong> Speech marks need opening quotes ("), capital letter for speech, and end punctuation (., ?) inside the closing quotes (")!
               </div>
             </div>
           )}
