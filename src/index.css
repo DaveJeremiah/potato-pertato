@@ -106,7 +106,19 @@ body {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-ink) transparent;
+}
+
+.study-viewport-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.study-viewport-content::-webkit-scrollbar-thumb {
+  background-color: var(--border-ink);
+  border-radius: 999px;
 }
 
 /* Custom Scrollbar */
