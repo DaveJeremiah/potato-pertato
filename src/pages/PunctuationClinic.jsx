@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PUNCTUATION_SURGERY_ITEMS } from '../data/examRevisionData';
 import NotebookBridgeModal from '../components/NotebookBridgeModal';
+import ScribblePad from '../components/ScribblePad';
 import { useTheme } from '../context/ThemeContext';
 import {
   CheckCircle2,
@@ -213,6 +214,7 @@ export default function PunctuationClinic() {
   const [armedStampId, setArmedStampId] = useState(null);
   const [draggingStampId, setDraggingStampId] = useState(null);
   const [dragOverTokenId, setDragOverTokenId] = useState(null);
+  const [focusedTokenId, setFocusedTokenId] = useState(null);
 
   const filteredItems =
     paperFilter === 'All'
@@ -227,6 +229,7 @@ export default function PunctuationClinic() {
     setLastFeedback(null);
     setRevealAll(false);
     setArmedStampId(null);
+    setFocusedTokenId(null);
     setShowChecklist(false);
   }, [currentIndex, paperFilter]);
 
@@ -235,11 +238,12 @@ export default function PunctuationClinic() {
 
   const applyStampToToken = (stampId, token) => {
     if (!stampId) {
+      setFocusedTokenId(token.id);
       if (token.needsFix) {
         setLastFeedback({
           type: 'info',
-          title: `👇 Pick a stamp from the tray below to fix "${token.raw}"!`,
-          detail: 'Drag a stamp onto the word, OR tap any stamp to arm it, then tap the word.'
+          title: `🎯 Target word: "${token.raw}"`,
+          detail: 'Pick a stamp from the tray below, drag it here, OR use ✍️ Scribble to handwrite the punctuation!'
         });
       } else {
         setShakeTokenId(token.id);
@@ -259,6 +263,7 @@ export default function PunctuationClinic() {
       if (!fixedTokenIds.includes(token.id)) {
         setFixedTokenIds((prev) => [...prev, token.id]);
       }
+      setFocusedTokenId(null);
       setLastFeedback({
         type: 'success',
         title: evaluation.message,
@@ -272,6 +277,78 @@ export default function PunctuationClinic() {
         detail: evaluation.detail
       });
       setTimeout(() => setShakeTokenId(null), 500);
+    }
+  };
+
+  // Handle handwritten scribble input from ScribblePad
+  const handleScribbleApply = ({ text, stampId, candidates = [] }) => {
+    if (!currentItem) return;
+    const allTexts = [text, ...candidates].filter(Boolean).map((s) => s.trim());
+
+    // 1. If a specific word tile is focused, try applying to it first
+    if (focusedTokenId) {
+      const targetToken = currentItem.tokens.find((t) => t.id === focusedTokenId);
+      if (targetToken) {
+        if (stampId) {
+          applyStampToToken(stampId, targetToken);
+          return;
+        }
+        const matchesFixed = allTexts.some(
+          (c) => c.toLowerCase().replace(/[^a-z]/g, '') === targetToken.raw.toLowerCase()
+        );
+        if (matchesFixed && targetToken.needsFix) {
+          if (!fixedTokenIds.includes(targetToken.id)) {
+            setFixedTokenIds((prev) => [...prev, targetToken.id]);
+          }
+          setFocusedTokenId(null);
+          setLastFeedback({
+            type: 'success',
+            title: `✍️ Handwritten Fix Applied! "${targetToken.raw}" → "${targetToken.fixed}"`,
+            detail: targetToken.explain
+          });
+          return;
+        }
+      }
+    }
+
+    // 2. Check if the handwritten word matches any unfixed token in the sentence
+    const matchedWordToken = currentItem.tokens.find(
+      (t) =>
+        t.needsFix &&
+        !fixedTokenIds.includes(t.id) &&
+        allTexts.some(
+          (c) =>
+            c.toLowerCase() === t.fixed.toLowerCase() ||
+            c.toLowerCase().replace(/[^a-z]/g, '') === t.raw.toLowerCase()
+        )
+    );
+
+    if (matchedWordToken) {
+      setFixedTokenIds((prev) => [...prev, matchedWordToken.id]);
+      setLastFeedback({
+        type: 'success',
+        title: `✍️ Scribble Recognized: "${matchedWordToken.fixed}" (${matchedWordToken.fixType})`,
+        detail: matchedWordToken.explain
+      });
+      return;
+    }
+
+    // 3. If a punctuation stamp was drawn (? ! , . “ ” ’ Aa), apply to the next unfixed token needing it
+    if (stampId) {
+      const matchingToken = currentItem.tokens.find(
+        (t) => t.needsFix && !fixedTokenIds.includes(t.id) && evaluateToolMatch(stampId, t).isMatch
+      );
+      if (matchingToken) {
+        applyStampToToken(stampId, matchingToken);
+      } else {
+        setArmedStampId(stampId);
+        const st = PUNCTUATION_STAMPS.find((s) => s.id === stampId);
+        setLastFeedback({
+          type: 'info',
+          title: `✍️ Scribble recognized as ${st ? st.name : stampId} Stamp!`,
+          detail: 'Stamp is now ARMED — tap any word tile on the board to test it!'
+        });
+      }
     }
   };
 
@@ -588,6 +665,7 @@ export default function PunctuationClinic() {
             const isFixed = fixedTokenIds.includes(token.id) || (revealAll && token.needsFix);
             const isShaking = shakeTokenId === token.id;
             const isDraggedOver = dragOverTokenId === token.id;
+            const isFocused = focusedTokenId === token.id && !isFixed;
 
             return (
               <div
@@ -605,6 +683,10 @@ export default function PunctuationClinic() {
                     ? isDark
                       ? '#271C04'
                       : '#FCE3A1'
+                    : isFocused
+                    ? isDark
+                      ? '#1E293B'
+                      : '#F1DFFE'
                     : isShaking
                     ? isDark
                       ? '#450A0A'
@@ -612,6 +694,8 @@ export default function PunctuationClinic() {
                     : 'var(--surface-alt)',
                   border: isDraggedOver
                     ? '3px dashed var(--cobalt)'
+                    : isFocused
+                    ? '2.5px solid var(--cobalt)'
                     : isFixed
                     ? '2.5px solid var(--accent-green)'
                     : '2.5px solid var(--border-ink)',
@@ -619,8 +703,8 @@ export default function PunctuationClinic() {
                     ? isDark
                       ? '3px 3px 0px #22C55E'
                       : '3px 3px 0px #15803D'
-                    : isDraggedOver
-                    ? '5px 5px 0px var(--cobalt)'
+                    : isDraggedOver || isFocused
+                    ? '4px 4px 0px var(--cobalt)'
                     : '4px 4px 0px var(--shadow-ink)',
                   borderRadius: '16px',
                   padding: '0.85rem 1.4rem',
@@ -900,8 +984,14 @@ export default function PunctuationClinic() {
           })}
         </div>
 
-        <div style={{ fontSize: '0.74rem', fontWeight: 800, color: 'var(--text-secondary)', flexShrink: 0 }}>
-          ⠿ Drag up or tap stamp
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+          <ScribblePad
+            mode="punctuation"
+            buttonLabel="✍️ Scribble"
+            placeholder="Draw ? ! . , “ ” ’ or write a capital word..."
+            targetHints={currentItem.tokens.filter((t) => t.needsFix).map((t) => t.fixed)}
+            onApply={handleScribbleApply}
+          />
         </div>
       </div>
 

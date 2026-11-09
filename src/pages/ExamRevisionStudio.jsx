@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { EXAM_PAPERS } from '../data/examRevisionData';
 import NotebookBridgeModal from '../components/NotebookBridgeModal';
+import ScribblePad from '../components/ScribblePad';
 import {
   Sparkles,
   Lightbulb,
@@ -81,6 +82,41 @@ export default function ExamRevisionStudio() {
     } else {
       setWrongChunkId(chunk.id);
       setTimeout(() => setWrongChunkId(null), 650);
+    }
+  };
+
+  // Handle handwritten scribble input during P.Q.A. or Vocab questions
+  const handleScribbleRevision = ({ text, candidates = [] }) => {
+    const allWords = [text, ...candidates].filter(Boolean).map((s) => s.toLowerCase().trim());
+    if (allWords.length === 0) return;
+
+    if (activeStation === 'comprehension' && currentComp) {
+      // Check if scribbled word matches the next required chunk or clue phrase
+      const nextIdx = selectedChunks.length;
+      const nextChunk = shuffledPool.find((c) => !c.isDistractor && c.isCorrectOrder === nextIdx);
+      if (nextChunk) {
+        const chunkLower = nextChunk.text.toLowerCase();
+        const matchesNext = allWords.some((w) => w.length >= 2 && chunkLower.includes(w));
+        if (matchesNext) {
+          setSelectedChunks((prev) => [...prev, nextChunk]);
+          return;
+        }
+      }
+      // Or if scribbled word matches the key answer clue, complete the answer!
+      const clueLower = (currentComp.cluePhrase || '').toLowerCase();
+      if (allWords.some((w) => w.length >= 3 && clueLower.includes(w))) {
+        const ordered = shuffledPool
+          .filter((c) => !c.isDistractor)
+          .sort((a, b) => a.isCorrectOrder - b.isCorrectOrder);
+        setSelectedChunks(ordered);
+      }
+    } else if (activeStation === 'vocabGrammar' && currentVg) {
+      const matchedOptIdx = currentVg.options.findIndex((opt) =>
+        allWords.some((w) => w.length >= 2 && opt.text.toLowerCase().includes(w))
+      );
+      if (matchedOptIdx !== -1) {
+        setSelectedOptionIdx(matchedOptIdx);
+      }
     }
   };
 
@@ -263,6 +299,13 @@ export default function ExamRevisionStudio() {
               </button>
             </div>
           )}
+
+          <ScribblePad
+            mode="text"
+            buttonLabel="✍️ Scribble"
+            placeholder="Handwrite the key clue word or answer..."
+            onApply={handleScribbleRevision}
+          />
 
           <Link
             to={`/punctuation-clinic?paper=${activePaperId}`}

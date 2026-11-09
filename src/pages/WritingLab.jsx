@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { WRITING_ARCHITECT_DATA } from '../data/examRevisionData';
 import NotebookBridgeModal from '../components/NotebookBridgeModal';
+import ScribblePad from '../components/ScribblePad';
 import { useTheme } from '../context/ThemeContext';
 import {
   Blocks,
@@ -57,6 +58,37 @@ export default function WritingLab() {
       ...prev,
       [`${paraId}_${slotId}`]: optionText
     }));
+  };
+
+  // Handle handwritten scribble input into active paragraph or sentence clinic
+  const handleScribbleStoryInput = ({ text }) => {
+    if (!text || !text.trim()) return;
+    const clean = text.trim();
+
+    if (activeMode === 'upgrader') {
+      const newId = `custom-${Date.now()}`;
+      setCustomCards((prev) => [
+        ...prev,
+        {
+          id: newId,
+          title: `Handwritten Sentence #${prev.length + 1}`,
+          weakProblem: 'Written live on the Smartboard Scribble Pad:',
+          stages: [
+            { level: 'Lv 1: Handwritten ✍️', text: clean, notes: 'Written on the Smartboard!' },
+            { level: 'Lv 2: Polished 🌟', text: clean.charAt(0).toUpperCase() + clean.slice(1) + (/[.!?]$/.test(clean) ? '' : '!'), notes: 'Checked capitals and end punctuation!' }
+          ]
+        }
+      ]);
+      setUpgraderStages((prev) => ({ ...prev, [newId]: 0 }));
+      return;
+    }
+
+    if (currentPara) {
+      const s1Key = `${currentPara.id}_s1`;
+      const s2Key = `${currentPara.id}_s2`;
+      const targetSlot = !selectedBlocks[s1Key] ? 's1' : 's2';
+      handleSelectOption(currentPara.id, targetSlot, clean);
+    }
   };
 
   const handleRandomSpark = () => {
@@ -210,6 +242,12 @@ export default function WritingLab() {
 
         {/* Right: Quick Tools */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+          <ScribblePad
+            mode="text"
+            buttonLabel="✍️ Scribble"
+            placeholder="Handwrite a phrase or sentence for the story..."
+            onApply={handleScribbleStoryInput}
+          />
           {activeMode !== 'upgrader' ? (
             <>
               <button
