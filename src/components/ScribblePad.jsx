@@ -6,7 +6,8 @@ import {
   Undo2,
   Check,
   Sparkles,
-  X
+  X,
+  GripHorizontal
 } from 'lucide-react';
 
 const STAMP_MAP = {
@@ -163,10 +164,55 @@ export default function ScribblePad({
   const [selectedCandidate, setSelectedCandidate] = useState('');
   const [detectedStampId, setDetectedStampId] = useState(null);
   const [isRecognizing, setIsRecognizing] = useState(false);
+  const [position, setPosition] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const canvasRef = useRef(null);
   const startTimeRef = useRef(Date.now());
   const debounceTimerRef = useRef(null);
+  const dragStartRef = useRef({ startX: 0, startY: 0, initialPosX: 0, initialPosY: 0 });
+
+  // Initialize position when opened if not set yet
+  useEffect(() => {
+    if (isOpen && !position) {
+      const defaultX = Math.max(16, window.innerWidth - 440);
+      const defaultY = Math.max(16, window.innerHeight - 340);
+      setPosition({ x: defaultX, y: defaultY });
+    }
+  }, [isOpen, position]);
+
+  const handleDragPointerDown = (e) => {
+    if (e.target.closest('button')) return;
+    e.preventDefault();
+    setIsDragging(true);
+
+    const currentX = position ? position.x : Math.max(16, window.innerWidth - 440);
+    const currentY = position ? position.y : Math.max(16, window.innerHeight - 340);
+
+    dragStartRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      initialPosX: currentX,
+      initialPosY: currentY
+    };
+
+    const handlePointerMove = (moveEvt) => {
+      const deltaX = moveEvt.clientX - dragStartRef.current.startX;
+      const deltaY = moveEvt.clientY - dragStartRef.current.startY;
+      const newX = Math.max(8, Math.min(window.innerWidth - 430, dragStartRef.current.initialPosX + deltaX));
+      const newY = Math.max(8, Math.min(window.innerHeight - 310, dragStartRef.current.initialPosY + deltaY));
+      setPosition({ x: newX, y: newY });
+    };
+
+    const handlePointerUp = () => {
+      setIsDragging(false);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+  };
 
   const CANVAS_WIDTH = 380;
   const CANVAS_HEIGHT = 135;
@@ -456,35 +502,51 @@ export default function ScribblePad({
         <span>{buttonLabel}</span>
       </button>
 
-      {/* Popover Scribble Pad Window */}
+      {/* Popover Scribble Pad Window (Draggable) */}
       {isOpen && (
         <div
           className="retro-window"
           style={{
             position: 'fixed',
-            bottom: '4.3rem',
-            right: '1.25rem',
+            left: position ? `${position.x}px` : undefined,
+            top: position ? `${position.y}px` : undefined,
+            bottom: position ? undefined : '4.3rem',
+            right: position ? undefined : '1.25rem',
             width: '415px',
             maxWidth: 'calc(100vw - 2rem)',
             backgroundColor: 'var(--surface)',
             border: '2.5px solid var(--border-ink)',
             borderRadius: '20px',
-            boxShadow: '7px 7px 0px var(--shadow-ink)',
+            boxShadow: isDragging ? '10px 10px 0px var(--shadow-ink)' : '7px 7px 0px var(--shadow-ink)',
             padding: '0.85rem',
             zIndex: 250,
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.55rem'
+            gap: '0.55rem',
+            transition: isDragging ? 'none' : 'box-shadow 0.15s ease'
           }}
         >
-          {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Header (Draggable Handle) */}
+          <div
+            onPointerDown={handleDragPointerDown}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              cursor: isDragging ? 'grabbing' : 'grab',
+              userSelect: 'none',
+              touchAction: 'none',
+              paddingBottom: '0.2rem'
+            }}
+            title="Click and drag to move Scribble Pad anywhere on screen"
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <GripHorizontal size={15} style={{ color: 'var(--text-secondary)', opacity: 0.8 }} />
               <span className="retro-pill-dark" style={{ fontSize: '0.68rem', padding: '0.18rem 0.5rem' }}>
                 ✍️ SCRIBBLE INPUT
               </span>
               <span style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--text-secondary)' }}>
-                {isRecognizing ? 'Reading ink...' : 'Write with stylus or finger'}
+                {isRecognizing ? 'Reading ink...' : 'Stylus / Finger'}
               </span>
             </div>
 
@@ -676,3 +738,4 @@ export default function ScribblePad({
     </div>
   );
 }
+

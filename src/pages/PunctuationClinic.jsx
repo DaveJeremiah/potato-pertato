@@ -564,26 +564,6 @@ export default function PunctuationClinic() {
           >
             <RotateCcw size={13} />
           </button>
-
-          {/* Notebook Bridge (60s) */}
-          <button
-            onClick={() =>
-              setNotebookModal({
-                open: true,
-                title: `Punctuation Surgery • ${currentItem.label}`,
-                task: `Rewrite this sentence neatly in your exercise book with all punctuation marks: "${currentItem.rawSentence}"`
-              })
-            }
-            className="retro-btn-primary"
-            style={{
-              padding: '0.25rem 0.75rem',
-              fontSize: '0.8rem',
-              backgroundColor: 'var(--cobalt)',
-              marginLeft: '0.2rem'
-            }}
-          >
-            <Pencil size={13} /> ✏️ Notebook (60s)
-          </button>
         </div>
       </div>
 
@@ -994,20 +974,6 @@ export default function PunctuationClinic() {
           />
         </div>
       </div>
-
-      {/* Notebook Modal */}
-      <NotebookBridgeModal
-        isOpen={notebookModal.open}
-        onClose={() => setNotebookModal({ ...notebookModal, open: false })}
-        promptTitle={notebookModal.title}
-        promptTask={notebookModal.task}
-        checklist={[
-          'Capital letters for sentence start & names',
-          'Speech marks ("...") or commas (,)',
-          'Apostrophes for possession or contractions',
-          'Correct end mark (. ? or !)'
-        ]}
-      />
     </div>
   );
 }

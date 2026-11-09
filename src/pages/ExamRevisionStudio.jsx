@@ -609,26 +609,6 @@ export default function ExamRevisionStudio() {
                 >
                   <Eye size={14} /> {showModelAnswer ? 'Hide' : 'Reveal Model Answer'}
                 </button>
-
-                <button
-                  onClick={() =>
-                    setNotebookModal({
-                      open: true,
-                      title: `${paper.title} • ${currentComp.number}`,
-                      task: `Write your complete P.Q.A. answer in your notebook: "${currentComp.question}"`,
-                      checklist: [
-                        'Capital letter at start',
-                        'Used question words in answer (P.Q.A.)',
-                        'Exact text fact included',
-                        'Full stop (.) at end'
-                      ]
-                    })
-                  }
-                  className="retro-btn-primary"
-                  style={{ padding: '0.35rem 0.85rem', fontSize: '0.82rem', backgroundColor: '#2329D6', marginLeft: 'auto' }}
-                >
-                  <Pencil size={14} /> ✏️ Write in Notebook (60s)
-                </button>
               </div>
             </div>
           </div>
@@ -851,14 +831,6 @@ export default function ExamRevisionStudio() {
           </div>
         </div>
       )}
-
-      <NotebookBridgeModal
-        isOpen={notebookModal.open}
-        onClose={() => setNotebookModal({ ...notebookModal, open: false })}
-        promptTitle={notebookModal.title}
-        promptTask={notebookModal.task}
-        checklist={notebookModal.checklist}
-      />
     </div>
   );
 }

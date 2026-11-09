@@ -274,26 +274,6 @@ export default function WritingLab() {
                 {skeletonMode ? <Eye size={13} /> : <EyeOff size={13} />}
                 {skeletonMode ? 'Full Story' : '🫣 Skeleton'}
               </button>
-
-              <button
-                onClick={() =>
-                  setNotebookModal({
-                    open: true,
-                    title: currentBlueprint.title,
-                    task: 'Write your 4-paragraph story in your exercise book using the sentence frames on the Smartboard!',
-                    checklist: [
-                      '4 distinct paragraphs (Setting, Hero, Problem, Rescue)',
-                      'Capital letters and full stops in every sentence',
-                      'At least 1 line of dialogue ("...")',
-                      'Rich descriptive adjectives'
-                    ]
-                  })
-                }
-                className="retro-btn-primary"
-                style={{ padding: '0.25rem 0.75rem', fontSize: '0.8rem', backgroundColor: 'var(--cobalt)' }}
-              >
-                <Pencil size={13} /> ✏️ Notebook (3m)
-              </button>
             </>
           ) : (
             <button
@@ -687,14 +667,6 @@ export default function WritingLab() {
           </div>
         </div>
       )}
-
-      <NotebookBridgeModal
-        isOpen={notebookModal.open}
-        onClose={() => setNotebookModal({ ...notebookModal, open: false })}
-        promptTitle={notebookModal.title}
-        promptTask={notebookModal.task}
-        checklist={notebookModal.checklist}
-      />
     </div>
   );
 }
