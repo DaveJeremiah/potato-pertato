@@ -424,6 +424,81 @@ export default function Home() {
       </div>
 
       {/* =========================================================
+          SMURF VILLAGE CLASSROOM SQUADS & METER SPOTLIGHT
+         ========================================================= */}
+      <div
+        className="retro-window"
+        style={{
+          padding: '1.25rem 1.6rem',
+          backgroundColor: isDark ? '#16192B' : '#FFFDF9',
+          border: '3px solid var(--border-ink)',
+          borderRadius: '24px',
+          boxShadow: '7px 7px 0px var(--shadow-ink)',
+          marginBottom: '2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1.25rem'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+          <div
+            style={{
+              fontSize: '2.4rem',
+              backgroundColor: 'var(--card-purple)',
+              border: '2.5px solid var(--border-ink)',
+              borderRadius: '20px',
+              width: '64px',
+              height: '64px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '3px 3px 0px var(--shadow-ink)'
+            }}
+          >
+            🫐
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <span className="retro-pill-dark" style={{ fontSize: '0.72rem' }}>
+                GRADE 4 CLASSROOM TEAMS
+              </span>
+              <span style={{ fontSize: '0.82rem', fontWeight: 900, color: '#3B82F6' }}>
+                Brainy • Dreamy • Harmony • Lucky
+              </span>
+            </div>
+            <h3 style={{ fontSize: '1.45rem', fontWeight: 900, margin: '0.2rem 0', color: 'var(--text-primary)' }}>
+              Smurf Village Headquarters & Defense Meter
+            </h3>
+            <p style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--text-secondary)', margin: 0 }}>
+              Track the 20-berry weekly wall meter, manage student rosters, and award points during Smartboard practice!
+            </p>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <Link
+            to="/village"
+            className="retro-btn-primary"
+            style={{
+              backgroundColor: '#2329D6',
+              borderRadius: '999px',
+              padding: '0.7rem 1.4rem',
+              fontSize: '0.92rem',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem'
+            }}
+          >
+            <span>Open Village HQ</span>
+            <ArrowUpRight size={18} />
+          </Link>
+        </div>
+      </div>
+
+      {/* =========================================================
           2. THE 6 COLOR RIBBON WORLDS
          ========================================================= */}
       <div>

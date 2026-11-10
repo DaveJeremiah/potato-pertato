@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { VillageProvider, useVillage } from './context/VillageContext';
 import Home from './pages/Home';
 import ExamRevisionStudio from './pages/ExamRevisionStudio';
 import PunctuationClinic from './pages/PunctuationClinic';
@@ -13,7 +14,9 @@ import MagneticPoetry from './pages/MagneticPoetry';
 import SentenceTrain from './pages/SentenceTrain';
 import EscapeRoom from './pages/EscapeRoom';
 import RiddleMatch from './pages/RiddleMatch';
+import VillageHub from './pages/VillageHub';
 import NotebookBridgeModal from './components/NotebookBridgeModal';
+import VillageDrawer from './components/VillageDrawer';
 import {
   LayoutDashboard,
   BookOpen,
@@ -30,9 +33,10 @@ import {
 } from 'lucide-react';
 import './index.css';
 
-function MainNavbar({ onOpenNotebook }) {
+function MainNavbar({ onOpenNotebook, onOpenVillage }) {
   const location = useLocation();
   const { isDark, toggleTheme } = useTheme();
+  const { totalBerries } = useVillage();
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -70,6 +74,9 @@ function MainNavbar({ onOpenNotebook }) {
         <Link to="/" className={`retro-nav-link ${isActive('/') ? 'active' : ''}`}>
           <LayoutDashboard size={17} /> Dashboard
         </Link>
+        <Link to="/village" className={`retro-nav-link ${isActive('/village') ? 'active' : ''}`}>
+          🫐 Smurf Village
+        </Link>
         <Link to="/exam-revision" className={`retro-nav-link ${isActive('/exam-revision') ? 'active' : ''}`}>
           <BookOpen size={17} /> Exam Revision
         </Link>
@@ -84,8 +91,25 @@ function MainNavbar({ onOpenNotebook }) {
         </Link>
       </div>
 
-      {/* Right Action Bar: Theme Toggle + Notebook Timer */}
+      {/* Right Action Bar: Village HUD + Theme Toggle + Notebook Timer */}
       <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+        <button
+          onClick={onOpenVillage}
+          className="retro-btn-outline"
+          style={{
+            borderRadius: '999px',
+            padding: '0.45rem 0.85rem',
+            fontSize: '0.84rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.35rem'
+          }}
+          title="Open Smurf Village Defense HUD & Squad Points"
+        >
+          <span>🫐 Village HUD</span>
+          <span style={{ fontWeight: 900, color: 'var(--cobalt)' }}>({totalBerries}/20)</span>
+        </button>
+
         <button
           onClick={toggleTheme}
           className="retro-theme-toggle"
@@ -112,9 +136,10 @@ function MainNavbar({ onOpenNotebook }) {
   );
 }
 
-function StudyTopBar({ onOpenNotebook }) {
+function StudyTopBar({ onOpenNotebook, onOpenVillage }) {
   const location = useLocation();
   const { isDark, toggleTheme } = useTheme();
+  const { totalBerries } = useVillage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -132,6 +157,8 @@ function StudyTopBar({ onOpenNotebook }) {
 
   const getPageInfo = () => {
     switch (location.pathname) {
+      case '/village':
+        return { label: 'Smurf Village HQ', color: 'var(--card-purple)' };
       case '/exam-revision':
         return { label: 'Exam Revision Studio', color: 'var(--card-orange)' };
       case '/punctuation-clinic':
@@ -223,6 +250,7 @@ function StudyTopBar({ onOpenNotebook }) {
               }}
             >
               {[
+                { path: '/village', label: '🫐 Smurf Village HQ' },
                 { path: '/exam-revision', label: '📖 Exam Revision Studio' },
                 { path: '/punctuation-clinic', label: '🔧 Punctuation Surgery' },
                 { path: '/writing-lab', label: '✍️ Writing Lab' },
@@ -252,8 +280,26 @@ function StudyTopBar({ onOpenNotebook }) {
         </div>
       </div>
 
-      {/* Right Controls: Dark Mode Toggle + Notebook Timer + Fullscreen */}
+      {/* Right Controls: Village HUD + Dark Mode Toggle + Notebook Timer + Fullscreen */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+        <button
+          onClick={onOpenVillage}
+          className="retro-btn-outline"
+          style={{
+            padding: '0.35rem 0.75rem',
+            borderRadius: '999px',
+            fontSize: '0.8rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.3rem',
+            backgroundColor: 'var(--surface)'
+          }}
+          title="Open Smurf Village Defense HUD & Squad Points"
+        >
+          <span>🫐 HUD</span>
+          <span style={{ fontWeight: 900, color: 'var(--cobalt)' }}>({totalBerries}/20)</span>
+        </button>
+
         <button
           onClick={toggleTheme}
           className="retro-theme-toggle"
@@ -294,58 +340,76 @@ function StudyTopBar({ onOpenNotebook }) {
   );
 }
 
-function LayoutShell({ children, onOpenNotebook }) {
+function LayoutShell({ children, onOpenNotebook, onOpenVillage }) {
   const location = useLocation();
   const isStudyMode = location.pathname !== '/';
 
   return (
     <div className={`app-container ${isStudyMode ? 'study-mode-container' : ''}`}>
       {!isStudyMode ? (
-        <MainNavbar onOpenNotebook={onOpenNotebook} />
+        <MainNavbar onOpenNotebook={onOpenNotebook} onOpenVillage={onOpenVillage} />
       ) : (
-        <StudyTopBar onOpenNotebook={onOpenNotebook} />
+        <StudyTopBar onOpenNotebook={onOpenNotebook} onOpenVillage={onOpenVillage} />
       )}
       <div className={isStudyMode ? 'study-viewport-content' : ''}>{children}</div>
     </div>
   );
 }
 
-function App() {
+function AppContent() {
   const [globalNotebookOpen, setGlobalNotebookOpen] = useState(false);
+  const [villageDrawerOpen, setVillageDrawerOpen] = useState(false);
 
   return (
-    <ThemeProvider>
-      <Router>
-        <LayoutShell onOpenNotebook={() => setGlobalNotebookOpen(true)}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/exam-revision" element={<ExamRevisionStudio />} />
-            <Route path="/punctuation-clinic" element={<PunctuationClinic />} />
-            <Route path="/writing-lab" element={<WritingLab />} />
-            <Route path="/play" element={<MatcherGame />} />
-            <Route path="/memory" element={<MemoryMatch />} />
-            <Route path="/balloon" element={<BalloonPop />} />
-            <Route path="/magnetic" element={<MagneticPoetry />} />
-            <Route path="/train" element={<SentenceTrain />} />
-            <Route path="/escape" element={<EscapeRoom />} />
-            <Route path="/riddle-match" element={<RiddleMatch />} />
-            <Route path="/editor" element={<Editor />} />
-          </Routes>
+    <Router>
+      <LayoutShell
+        onOpenNotebook={() => setGlobalNotebookOpen(true)}
+        onOpenVillage={() => setVillageDrawerOpen(true)}
+      >
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/village" element={<VillageHub />} />
+          <Route path="/exam-revision" element={<ExamRevisionStudio />} />
+          <Route path="/punctuation-clinic" element={<PunctuationClinic />} />
+          <Route path="/writing-lab" element={<WritingLab />} />
+          <Route path="/play" element={<MatcherGame />} />
+          <Route path="/memory" element={<MemoryMatch />} />
+          <Route path="/balloon" element={<BalloonPop />} />
+          <Route path="/magnetic" element={<MagneticPoetry />} />
+          <Route path="/train" element={<SentenceTrain />} />
+          <Route path="/escape" element={<EscapeRoom />} />
+          <Route path="/riddle-match" element={<RiddleMatch />} />
+          <Route path="/editor" element={<Editor />} />
+        </Routes>
 
-          <NotebookBridgeModal
-            isOpen={globalNotebookOpen}
-            onClose={() => setGlobalNotebookOpen(false)}
-            promptTitle="Smartboard-to-Notebook Practice Time"
-            promptTask="Eyes on your exercise book! Write down what we just sparked on the Smartboard using your neatest handwriting and complete sentences."
-            checklist={[
-              'Capital letter at the start of every sentence',
-              'Complete sentence (no 1-word fragments!)',
-              'Checked spelling of key words on the board',
-              'Full stop, question mark, or exclamation mark at the end'
-            ]}
-          />
-        </LayoutShell>
-      </Router>
+        <NotebookBridgeModal
+          isOpen={globalNotebookOpen}
+          onClose={() => setGlobalNotebookOpen(false)}
+          promptTitle="Smartboard-to-Notebook Practice Time"
+          promptTask="Eyes on your exercise book! Write down what we just sparked on the Smartboard using your neatest handwriting and complete sentences."
+          checklist={[
+            'Capital letter at the start of every sentence',
+            'Complete sentence (no 1-word fragments!)',
+            'Checked spelling of key words on the board',
+            'Full stop, question mark, or exclamation mark at the end'
+          ]}
+        />
+
+        <VillageDrawer
+          isOpen={villageDrawerOpen}
+          onClose={() => setVillageDrawerOpen(false)}
+        />
+      </LayoutShell>
+    </Router>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <VillageProvider>
+        <AppContent />
+      </VillageProvider>
     </ThemeProvider>
   );
 }
