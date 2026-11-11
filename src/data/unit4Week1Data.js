@@ -40,202 +40,229 @@ Madison is no ordinary bird. He is articulate, plays Monopoly, helps with crossw
 };
 
 export const STORY_VOCABULARY_QUESTIONS = [
-  // Core Book Choosing Terms (Session 4.1 / LB p. 95)
+  // 1. Core Book Choosing Terms (Session 4.1 / LB p. 95) - Simple & Direct
   {
     id: 'sv-1',
     category: 'definitions',
-    question: 'What is the special name for the short summary printed on the back cover that tempts you to read a book?',
+    question: 'What is the short summary on the back cover of a book called?',
     correct: 'Blurb',
-    options: ['Blurb', 'Plot', 'Spine', 'Glossary'],
+    options: ['Plot', 'Blurb', 'Spine', 'Glossary'],
     explanation: 'A blurb tells what the book is about without spoiling the ending!',
     lbRef: 'LB p. 95 Key Word'
   },
   {
     id: 'sv-2',
     category: 'definitions',
-    question: 'Which word describes the sequence, chain of events, or "recipe" of what happens from the start of a story to the end?',
+    question: 'What do we call what happens in a story from start to finish?',
     correct: 'Plot',
-    options: ['Plot', 'Genre', 'Setting', 'Dialogue'],
-    explanation: 'The plot is the storyline: Introduction → Build-up → Climax → Resolution → Ending.',
+    options: ['Genre', 'Setting', 'Plot', 'Dialogue'],
+    explanation: 'The plot is the sequence of events (the story recipe)!',
     lbRef: 'LB p. 101 Getting Started'
   },
   {
     id: 'sv-3',
     category: 'definitions',
-    question: 'Which term refers to the style, category, or type of story (e.g. fantasy, mystery, humorous fiction)?',
+    question: 'What is the category or type of story called (like comedy or fantasy)?',
     correct: 'Genre',
-    options: ['Genre', 'Publisher', 'Author', 'Theme'],
-    explanation: 'Genre comes from the French word for "kind" or "type".',
+    options: ['Author', 'Genre', 'Publisher', 'Blurb'],
+    explanation: 'Genre means the type or kind of story.',
     lbRef: 'LB p. 95'
   },
   {
     id: 'sv-4',
     category: 'definitions',
-    question: 'Where and when a story takes place is called the...',
+    question: 'Where and when a story takes place is the...',
     correct: 'Setting',
-    options: ['Setting', 'Plot', 'Blurb', 'Resolution'],
-    explanation: 'The setting includes the location, time period, and atmospheric weather.',
+    options: ['Plot', 'Character', 'Setting', 'Theme'],
+    explanation: 'The setting tells us where and when the story happens.',
     lbRef: 'LB p. 95'
   },
   {
     id: 'sv-5',
     category: 'definitions',
-    question: 'The people, animals, or creatures who take part in the action of a story are the...',
+    question: 'The people or animals in a story are the...',
     correct: 'Characters',
-    options: ['Characters', 'Narrators', 'Reviewers', 'Publishers'],
-    explanation: 'Characters drive the action — like Harry Holdsworth and Madison the parrot!',
+    options: ['Characters', 'Settings', 'Authors', 'Narrators'],
+    explanation: 'Characters are the people or animals in the action!',
     lbRef: 'LB p. 95'
   },
   {
     id: 'sv-6',
     category: 'definitions',
-    question: 'What punctuation marks must go around the exact words spoken out loud by a character?',
-    correct: 'Speech Marks (" " or \' \')',
-    options: ['Speech Marks (" " or \' \')', 'Exclamation Marks (!)', 'Brackets ( )', 'Commas (,)'],
-    explanation: 'Speech marks (also called inverted commas) hug direct spoken words!',
+    question: 'Which punctuation marks go around spoken words?',
+    correct: 'Speech Marks (" ")',
+    options: ['Commas (,)', 'Speech Marks (" ")', 'Full Stops (.)', 'Question Marks (?)'],
+    explanation: 'Speech marks (inverted commas) hug the words a character says out loud.',
     lbRef: 'LB p. 98 Language Focus'
   },
   {
     id: 'sv-7',
     category: 'definitions',
-    question: 'What is a "Legacy" in a story (like the one Great Uncle George left Harry)?',
-    correct: 'Money or property left to someone in a will',
+    question: 'Uncle George left Harry a "legacy". What is a legacy?',
+    correct: 'A gift left to someone in a will',
     options: [
-      'Money or property left to someone in a will',
-      'A very rare, expensive bird cage',
-      'A secret map drawn on parchment',
-      'A magical riddle that cannot be solved'
+      'A noisy bird cage',
+      'A gift left to someone in a will',
+      'A secret treasure map',
+      'A difficult riddle'
     ],
-    explanation: 'Uncle George died and left Harry a legacy — which turned out to be Mad the parrot!',
+    explanation: 'A legacy is something given to you when an older relative passes away.',
     lbRef: 'LB p. 97 Glossary'
   },
+  {
+    id: 'sv-8',
+    category: 'definitions',
+    question: 'Where do you find the blurb on a book?',
+    correct: 'On the back cover',
+    options: ['On the front cover', 'On the spine', 'On the back cover', 'Inside the glossary'],
+    explanation: 'Blurbs are printed on the back cover so shoppers can read them quickly!',
+    lbRef: 'LB p. 95'
+  },
+  {
+    id: 'sv-9',
+    category: 'definitions',
+    question: 'Who writes the words in a book?',
+    correct: 'The Author',
+    options: ['The Illustrator', 'The Author', 'The Publisher', 'The Reader'],
+    explanation: 'Dick King-Smith is the author who wrote Harry’s Mad.',
+    lbRef: 'LB p. 95'
+  },
+  {
+    id: 'sv-10',
+    category: 'definitions',
+    question: 'Who draws the pictures on the book cover and pages?',
+    correct: 'The Illustrator',
+    options: ['The Character', 'The Author', 'The Illustrator', 'The Narrator'],
+    explanation: 'Colin McNaughton is the illustrator who drew the parrot pictures.',
+    lbRef: 'LB p. 95'
+  },
 
-  // Genre Detective (Matching clues to genres)
+  // 2. Genre Detective (Clues to Genres) - Simple & Fun
   {
     id: 'gd-1',
     category: 'genres',
-    question: 'A story where a regular schoolboy inherits a talking African Grey parrot that cheats at Monopoly and tells jokes belongs to which genre?',
-    correct: 'Humorous Realistic Fiction',
-    options: ['Humorous Realistic Fiction', 'Science Fiction', 'Non-Fiction Report', 'Fairy Tale'],
-    explanation: 'It is set in the real modern world with funny, comedic twists!',
+    question: 'A boy gets a funny talking parrot that plays Monopoly. What genre is this?',
+    correct: 'Humorous Fiction',
+    options: ['Science Fiction', 'Humorous Fiction', 'Non-Fiction Report', 'Fairy Tale'],
+    explanation: 'It is a funny, comedy adventure set in real life!',
     lbRef: 'LB p. 96 Activity 1d'
   },
   {
     id: 'gd-2',
     category: 'genres',
-    question: 'A text that contains diagrams, bullet points, and verified scientific facts about Antarctic emperor penguins belongs to which genre?',
-    correct: 'Non-Fiction Information Text',
-    options: ['Non-Fiction Information Text', 'Historical Fiction', 'Fantasy Story', 'Fable'],
-    explanation: 'Non-fiction presents real facts and information without fictional plot.',
-    lbRef: 'Term 1 Revision Connection'
+    question: 'A book with true facts and real photos about emperor penguins is...',
+    correct: 'Non-Fiction',
+    options: ['Fantasy', 'Non-Fiction', 'Fable', 'Poem'],
+    explanation: 'Non-fiction gives real factual information.',
+    lbRef: 'Term 1 Connection'
   },
   {
     id: 'gd-3',
     category: 'genres',
-    question: 'A short animal tale where a Scorpion asks a Frog for a ride across a river, ending with a life lesson (moral), is a...',
+    question: 'A short animal story that teaches a life lesson (moral) is a...',
     correct: 'Fable',
-    options: ['Fable', 'Biography', 'Mystery', 'Play Script'],
-    explanation: 'Fables use animal characters to teach a moral lesson (like Aesop).',
+    options: ['Fable', 'Mystery', 'Biography', 'News Report'],
+    explanation: 'Fables (like The Scorpion and the Frog) teach moral lessons.',
     lbRef: 'LB p. 124 Preview'
   },
   {
     id: 'gd-4',
     category: 'genres',
-    question: 'A tale featuring a young girl climbing foggy mountain peaks to ask an ancient Silver Ice Dragon for snow is...',
+    question: 'A story with flying dragons, wizards, and magic ice spells is...',
     correct: 'Fantasy Fiction',
-    options: ['Fantasy Fiction', 'Realistic Fiction', 'News Report', 'Recipe'],
-    explanation: 'Fantasy includes magical creatures, mythical worlds, and impossible powers.',
-    lbRef: 'Paper 2 Mountain Dragon'
+    options: ['Realistic Fiction', 'Recipe', 'Fantasy Fiction', 'News Report'],
+    explanation: 'Fantasy stories have magic and mythical creatures.',
+    lbRef: 'Paper 2 Connection'
   },
 
-  // 5 Plot Mountain Stages (Session 4.3 / LB pp. 101-105)
+  // 3. 5 Plot Mountain Stages (Session 4.3 / LB pp. 101-105)
   {
     id: 'pm-1',
     category: 'plot',
-    question: 'In the Story Mountain recipe, what is the VERY FIRST stage called where we meet Harry and learn about Uncle George?',
-    correct: 'Introduction (Exposition)',
-    options: ['Introduction (Exposition)', 'Climax', 'Resolution', 'Build-Up'],
-    explanation: 'The introduction sets the scene and introduces the main characters.',
+    question: 'What is the FIRST stage of a story called?',
+    correct: 'Introduction',
+    options: ['Climax', 'Ending', 'Resolution', 'Introduction'],
+    explanation: 'The introduction introduces the characters and setting.',
     lbRef: 'LB p. 102 Story Mountain'
   },
   {
     id: 'pm-2',
     category: 'plot',
-    question: 'Which stage of the plot comes right in the middle, where the biggest problem or exciting turning point happens?',
-    correct: 'Complication / Climax',
-    options: ['Complication / Climax', 'Introduction', 'Resolution', 'Ending'],
-    explanation: 'The climax is the peak of excitement or maximum trouble in the story!',
+    question: 'What is the peak problem or most exciting part of a story called?',
+    correct: 'Climax (Problem)',
+    options: ['Climax (Problem)', 'Introduction', 'Resolution', 'Title'],
+    explanation: 'The climax is the biggest problem or most exciting moment.',
     lbRef: 'LB p. 102 Story Mountain'
   },
   {
     id: 'pm-3',
     category: 'plot',
-    question: 'What is the "Resolution" stage of a story?',
-    correct: 'How the problem or crisis is solved',
-    options: [
-      'How the problem or crisis is solved',
-      'The opening sentence of the blurb',
-      'The list of words at the back of the book',
-      'The time and place where the characters live'
-    ],
-    explanation: 'Resolution means finding a solution to the complication.',
+    question: 'What happens in the "Resolution" stage of a story?',
+    correct: 'The problem is solved',
+    options: ['The story begins', 'The problem is solved', 'We meet the author', 'A character leaves'],
+    explanation: 'Resolution means finding a solution to the problem.',
     lbRef: 'LB p. 102'
   },
   {
     id: 'pm-4',
     category: 'plot',
-    question: 'Put these 3 plot stages in chronological order: [A] Resolution, [B] Introduction, [C] Climax',
+    question: 'Which order is correct for a story mountain?',
     correct: 'Introduction → Climax → Resolution',
     options: [
-      'Introduction → Climax → Resolution',
       'Climax → Introduction → Resolution',
       'Resolution → Climax → Introduction',
-      'Introduction → Resolution → Climax'
+      'Introduction → Climax → Resolution',
+      'Resolution → Introduction → Climax'
     ],
     explanation: 'First Introduction, then the peak Climax, followed by the Resolution!',
     lbRef: 'Thursday Checkpoint Q1'
   },
 
-  // Vocabulary Detective: Shades of Meaning & Homophones (Sessions 4.2 & 4.4)
+  // 4. Vocabulary & Traps: Shades of Meaning & Homophones (Sessions 4.2 & 4.4)
   {
     id: 'voc-1',
     category: 'glossary',
-    question: 'Order these words on the "Funny Scale" from weakest to strongest intensity: hilarious, amusing, hysterical',
-    correct: '1. Amusing → 2. Hilarious → 3. Hysterical',
+    question: 'Which word is the STRONGEST on the Funny Scale?',
+    correct: 'Hysterical (crying with laughter)',
     options: [
-      '1. Amusing → 2. Hilarious → 3. Hysterical',
-      '1. Hysterical → 2. Hilarious → 3. Amusing',
-      '1. Hilarious → 2. Amusing → 3. Hysterical',
-      '1. Amusing → 2. Hysterical → 3. Hilarious'
+      'Amusing (mild smile)',
+      'Funny',
+      'Hysterical (crying with laughter)',
+      'Polite'
     ],
-    explanation: 'Amusing = mildly funny; Hilarious = very funny; Hysterical = uncontrollably funny!',
+    explanation: 'Hysterical is uncontrollably funny — level 3 on the scale!',
     lbRef: 'LB p. 99 Shades of Meaning'
   },
   {
     id: 'voc-2',
     category: 'glossary',
-    question: 'Choose the correct homophone: "Madison the parrot spoke in a low, _________ whisper so the burglar wouldn\'t hear."',
+    question: 'Madison spoke in a rough, raspy voice. Which spelling is correct?',
     correct: 'hoarse (rough voice)',
-    options: ['hoarse (rough voice)', 'horse (the four-legged animal)'],
-    explanation: 'Hoarse with an "oa" means raspy or rough sounding voice. Horse is an animal!',
+    options: ['horse (the farm animal)', 'hoarse (rough voice)'],
+    explanation: 'Hoarse with "oa" means a scratchy voice. Horse is an animal!',
     lbRef: 'LB p. 106 Writing Tip'
   },
   {
     id: 'voc-3',
     category: 'glossary',
-    question: 'In the blurb, Madison says, "Pleased to meet you, buddy!" What is the British English equivalent for the American slang word "buddy"?',
-    correct: 'Friend / Pal / Mate',
-    options: ['Friend / Pal / Mate', 'Uncle', 'Teacher', 'Doctor'],
-    explanation: 'Buddy is informal American slang for friend or pal.',
+    question: 'Madison calls Harry "buddy". What does "buddy" mean in British English?',
+    correct: 'Friend',
+    options: ['Uncle', 'Teacher', 'Doctor', 'Friend'],
+    explanation: 'Buddy is American slang for friend, pal, or mate.',
     lbRef: 'LB p. 106 Activity 2'
   },
   {
     id: 'voc-4',
     category: 'glossary',
-    question: 'If something is described as "cherished" (like Harry\'s pet parrot), what does it mean?',
-    correct: 'Deeply loved, protected, and valued',
-    options: ['Deeply loved, protected, and valued', 'Very cheap and broken', 'Loud and annoying', 'Hidden in the attic'],
-    explanation: 'Cherished means held dear and cared for with great affection.',
+    question: 'Harry "cherished" his pet parrot. What does "cherished" mean?',
+    correct: 'Deeply loved and valued',
+    options: [
+      'Very cheap and old',
+      'Deeply loved and valued',
+      'Loud and annoying',
+      'Lost in the woods'
+    ],
+    explanation: 'Cherished means held dear and cared for with love.',
     lbRef: 'LB p. 97 Glossary'
   }
 ];

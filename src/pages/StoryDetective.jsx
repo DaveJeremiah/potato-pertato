@@ -47,6 +47,7 @@ export default function StoryDetective() {
   const [bestStreak, setBestStreak] = useState(0);
   const [selectedSquadId, setSelectedSquadId] = useState(squads[0]?.id || 'brainy');
   const [comboAlert, setComboAlert] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState([]);
 
   // Story Mountain State
   const [selectedMountainStage, setSelectedMountainStage] = useState(1);
@@ -61,6 +62,18 @@ export default function StoryDetective() {
   });
 
   const activeQuestion = filteredQuestions[currentIdx % filteredQuestions.length];
+
+  // Shuffle options whenever the active question changes
+  useEffect(() => {
+    if (activeQuestion?.options) {
+      const arr = [...activeQuestion.options];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      setShuffledOptions(arr);
+    }
+  }, [activeQuestion]);
 
   // Synthesize sound
   const playSound = (isCorrect) => {
@@ -392,7 +405,7 @@ export default function StoryDetective() {
 
             {/* Options Grid (Large Smartboard Touch Targets) */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.65rem' }}>
-              {activeQuestion.options.map((opt, idx) => {
+              {shuffledOptions.map((opt, idx) => {
                 const isSelected = selectedOption === opt;
                 const isCorrect = opt === activeQuestion.correct;
 
@@ -1247,3 +1260,4 @@ export default function StoryDetective() {
     </div>
   );
 }
+
