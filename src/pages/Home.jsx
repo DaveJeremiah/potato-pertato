@@ -77,6 +77,19 @@ const SECTION_THEMES = [
 
 const ALL_MODULES = [
   {
+    id: 'm-story-detective',
+    category: 'writing',
+    theme: 'purple',
+    badge: 'UNIT 4 WEEK 1 • HARRY\'S MAD',
+    metaLeft: 'Interactive Blurb',
+    metaRight: 'Continuous Arcade',
+    title: 'Story Detective: Book Anatomy & Plot Arcade',
+    desc: 'Brush up on Genre, Plot, Blurbs, Characters, and the 5-Stage Story Mountain with rapid-fire streaks, interactive book explorer, and the Funny Scale!',
+    route: '/story-detective',
+    btnText: 'Launch Story Detective',
+    icon: BookOpen
+  },
+  {
     id: 'm-p1',
     category: 'exam',
     theme: 'orange',
@@ -344,6 +357,9 @@ export default function Home() {
             </p>
 
             <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap' }}>
+              <Link to="/story-detective" className="retro-btn-primary" style={{ backgroundColor: '#7C3AED', textDecoration: 'none', fontSize: '1.05rem', padding: '0.85rem 1.4rem' }}>
+                🕵️ Unit 4: Story Detective
+              </Link>
               <Link to="/exam-revision?paper=nonfiction" className="retro-btn-primary" style={{ backgroundColor: '#2329D6', textDecoration: 'none', fontSize: '1.05rem', padding: '0.85rem 1.5rem' }}>
                 🌍 Lesson 1: Revise Paper 1 (Non-Fiction)
               </Link>

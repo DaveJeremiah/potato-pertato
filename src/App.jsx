@@ -15,6 +15,7 @@ import SentenceTrain from './pages/SentenceTrain';
 import EscapeRoom from './pages/EscapeRoom';
 import RiddleMatch from './pages/RiddleMatch';
 import VillageHub from './pages/VillageHub';
+import StoryDetective from './pages/StoryDetective';
 import NotebookBridgeModal from './components/NotebookBridgeModal';
 import VillageDrawer from './components/VillageDrawer';
 import {
@@ -76,6 +77,9 @@ function MainNavbar({ onOpenNotebook, onOpenVillage }) {
         </Link>
         <Link to="/village" className={`retro-nav-link ${isActive('/village') ? 'active' : ''}`}>
           🫐 Smurf Village
+        </Link>
+        <Link to="/story-detective" className={`retro-nav-link ${isActive('/story-detective') ? 'active' : ''}`}>
+          🕵️ Story Detective
         </Link>
         <Link to="/exam-revision" className={`retro-nav-link ${isActive('/exam-revision') ? 'active' : ''}`}>
           <BookOpen size={17} /> Exam Revision
@@ -159,6 +163,8 @@ function StudyTopBar({ onOpenNotebook, onOpenVillage }) {
     switch (location.pathname) {
       case '/village':
         return { label: 'Smurf Village HQ', color: 'var(--card-purple)' };
+      case '/story-detective':
+        return { label: 'Story Detective Arcade', color: 'var(--card-purple)' };
       case '/exam-revision':
         return { label: 'Exam Revision Studio', color: 'var(--card-orange)' };
       case '/punctuation-clinic':
@@ -251,6 +257,7 @@ function StudyTopBar({ onOpenNotebook, onOpenVillage }) {
             >
               {[
                 { path: '/village', label: '🫐 Smurf Village HQ' },
+                { path: '/story-detective', label: '🕵️ Story Detective Arcade' },
                 { path: '/exam-revision', label: '📖 Exam Revision Studio' },
                 { path: '/punctuation-clinic', label: '🔧 Punctuation Surgery' },
                 { path: '/writing-lab', label: '✍️ Writing Lab' },
@@ -369,6 +376,8 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/village" element={<VillageHub />} />
+          <Route path="/story-detective" element={<StoryDetective />} />
+          <Route path="/book-explorer" element={<StoryDetective />} />
           <Route path="/exam-revision" element={<ExamRevisionStudio />} />
           <Route path="/punctuation-clinic" element={<PunctuationClinic />} />
           <Route path="/writing-lab" element={<WritingLab />} />
